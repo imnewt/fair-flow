@@ -1,6 +1,6 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-// import Ionicons from "react-native-vector-icons/Ionicons"
+import Ionicons from "react-native-vector-icons/Ionicons"
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 // import Ionicons from "react-native-vector-icons/Ionicons"
@@ -24,32 +24,34 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        // screenOptions={({ route }) => ({
-        //   tabBarIcon: ({ color }) => {
-        //     let iconName;
-        //     if (route.name === "Home") {
-        //       iconName = "md-home";
-        //     } else if (route.name === "Cart") {
-        //     //   return <CartIconWithBadge name="ios-cart" size={25} color={color} />
-        //       iconName = "ios-wallet";
-        //     } else if (route.name === "Orders") {
-        //       iconName = "ios-wallet";
-        //     } else if (route.name === "Settings") {
-        //         iconName = "ios-list";
-        //     }
-        //     return <Ionicons name={iconName} size={25} color={color} />
-        //   }
-        // })}
-        // tabBarOptions={{
-        //   activeTintColor: "#DD5A5A",
-        //   inactiveTintColor: "gray",
-        //   style: { height: 60 },
-        //   labelStyle: {
-        //     fontSize: 14,
-        //     paddingBottom: 3
-        //   },
-        //   keyboardHidesTabBar: true
-        // }}
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ color }) => {
+            let iconName;
+            if (route.name === "Feed") {
+              iconName = "md-home";
+            } else if (route.name === "Library") {
+              iconName = "ios-bookmarks";
+            } else if (route.name === "Favorites") {
+              iconName = "ios-heart";
+            } else if (route.name === "Settings") {
+                iconName = "ios-settings";
+            }
+            return <Ionicons name={iconName} size={25} color={color} />
+          }
+        })}
+        tabBarOptions={{
+          activeTintColor: "#FCFCF2",
+          inactiveTintColor: "#8D8E91",
+          style: { 
+            backgroundColor: "#383838",
+            height:60,
+            paddingBottom:3
+          },
+          labelStyle: {
+            fontSize: 12,
+          },
+          keyboardHidesTabBar: true
+        }}
       >
         <Tab.Screen name="Feed" component={FeedStackScreen}/>
         <Tab.Screen name="Library" component={LibraryStackScreen}/>
