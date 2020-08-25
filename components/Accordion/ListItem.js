@@ -28,16 +28,6 @@ const styles = StyleSheet.create({
   }
 });
 
-// export interface ListItem {
-//   name: string;
-//   points: string;
-// }
-
-// interface ListItemProps {
-//   item: ListItem;
-//   isLast: boolean;
-// }
-
 export default ({ item, isLast }) => {
   const bottomRadius = isLast ? 8 : 0;
   return (

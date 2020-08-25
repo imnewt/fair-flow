@@ -15,21 +15,24 @@ import { FlatList } from "react-native-gesture-handler";
 
 const lists = [
     {
-        name: "Total Points 1",
+      beverageName: "weasel coffee",
+      country: "Vietnam",
         items: [
         { name: "Nathaniel Fitzgerald", points: "$3.45" },
         { name: "Lawrence Fullter Fitzgerald", points: "$3.45" },
         { name: "Jacob Mullins", points: "$3.45" }
     ]},
     {
-        name: "Total Points 2",
+      beverageName: "cappuccino",
+      country: "Korea",
         items: [
         { name: "Nathaniel Fitzgerald", points: "$3.45" },
         { name: "Lawrence Fullter Fitzgerald", points: "$3.45" },
         { name: "Jacob Mullins", points: "$3.45" }
     ]},
     {
-        name: "Total Points 3",
+      beverageName: "espresso",
+      country: "Japan",
         items: [
         { name: "Nathaniel Fitzgerald", points: "$3.45" },
         { name: "Lawrence Fullter Fitzgerald", points: "$3.45" },
