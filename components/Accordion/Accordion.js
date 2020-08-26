@@ -1,43 +1,46 @@
 import React from "react";
-import { StyleSheet, Text, ScrollView } from "react-native";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
 
 import List from "./List";
 import { FlatList } from "react-native-gesture-handler";
-
-// const list = {
-//   name: "Total Points",
-//   items: [
-//     { name: "Nathaniel Fitzgerald", points: "$3.45" },
-//     { name: "Lawrence Fullter Fitzgerald", points: "$3.45" },
-//     { name: "Jacob Mullins", points: "$3.45" }
-//   ]
-// };
 
 const lists = [
     {
       beverageName: "weasel coffee",
       country: "Vietnam",
-        items: [
-        { name: "Nathaniel Fitzgerald", points: "$3.45" },
-        { name: "Lawrence Fullter Fitzgerald", points: "$3.45" },
-        { name: "Jacob Mullins", points: "$3.45" }
-    ]},
+      creator: "Huyen Pham",
+      time: "4:00",
+      difficulty: "Medium"
+    },
     {
       beverageName: "cappuccino",
       country: "Korea",
-        items: [
-        { name: "Nathaniel Fitzgerald", points: "$3.45" },
-        { name: "Lawrence Fullter Fitzgerald", points: "$3.45" },
-        { name: "Jacob Mullins", points: "$3.45" }
-    ]},
+      creator: "Tan Truc",
+      time: "2:00",
+      difficulty: "Easy"
+    },
     {
       beverageName: "espresso",
       country: "Japan",
-        items: [
-        { name: "Nathaniel Fitzgerald", points: "$3.45" },
-        { name: "Lawrence Fullter Fitzgerald", points: "$3.45" },
-        { name: "Jacob Mullins", points: "$3.45" }
-    ]}
+      creator: "Quynh Han",
+      time: "5:50",
+      difficulty: "Hard"
+    },
+    {
+      beverageName: "espresso",
+      country: "Japan",
+      creator: "Quynh Han",
+      time: "5:50",
+      difficulty: "Hard"
+    },
+    {
+      beverageName: "espresso",
+      country: "Japan",
+      creator: "Quynh Han",
+      time: "5:50",
+      difficulty: "Hard",
+      isLast: true
+    }
 ];
 
 const styles = StyleSheet.create({
@@ -63,9 +66,7 @@ export default () => {
             <List list={item}/>
         )}
       />
-      {/* <List {...{ list }} />
-      <List {...{ list }} />
-      <List {...{ list }} /> */}
+      <View style={{height: 30}}/>
     </ScrollView>
   );
 };

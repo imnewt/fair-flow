@@ -4,15 +4,16 @@ import Animated, { Easing } from 'react-native-reanimated';
 import { mix, bin, useTransition } from 'react-native-redash';
 import { Rating, Avatar } from 'react-native-elements';
 import Chevron from './Chevron';
-import Item, { LIST_ITEM_HEIGHT } from './ListItem';
+import RecipeExpand, { LIST_ITEM_HEIGHT } from './RecipeExpand';
 
-const { not } = Animated;
+const { not, interpolate } = Animated;
 const styles = StyleSheet.create({
   container: {
     marginTop: 16,
     backgroundColor: "white",
     padding: 16,
-    borderRadius: 8
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8
   },
   line: {
     width: "100%",
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
   },
   userInfo: {
     flexDirection:"row", 
-    alignItems:"center",
+    alignItems:"center"
   },
   userName: {
     fontSize: 16,
@@ -61,12 +62,27 @@ export default ({ list }) => {
     400,
     Easing.inOut(Easing.ease),
   );
-  const height = mix(transition, 0, LIST_ITEM_HEIGHT * list.items.length);
+
+  const height = mix(transition, 0, LIST_ITEM_HEIGHT);
+
+  const bottomRadius = interpolate(transition, {
+    inputRange: [0, 16 / 400],
+    outputRange: [8, 0]
+  });
 
   return (
     <>
       <TouchableWithoutFeedback onPress={() => setOpen((prev) => !prev)}>
-        <Animated.View style={styles.container}>
+        <Animated.View
+          style={[
+            styles.container,
+            {
+              borderBottomLeftRadius: bottomRadius,
+              borderBottomRightRadius: bottomRadius
+            },
+            
+          ]}
+        >
           <View style={styles.line}>
             <Text style={styles.beverageName}>{list.beverageName}</Text>
             <Chevron {...{transition}} />
@@ -94,7 +110,7 @@ export default ({ list }) => {
                 rounded
                 source={require("../../assets/images/test.gif")}
               />
-              <Text style={styles.userName}>Huyen Pham</Text>
+              <Text style={styles.userName}>{list.creator}</Text>
             </View>
             <Rating 
               imageSize={16}
@@ -107,9 +123,7 @@ export default ({ list }) => {
         </Animated.View>
       </TouchableWithoutFeedback>
       <Animated.View style={[styles.items, {height}]}>
-        {list.items.map((item, key) => (
-          <Item {...{item, key}} isLast={key === list.items.length - 1} />
-        ))}
+        <RecipeExpand time={list.time} difficulty={list.difficulty} isLast={list.isLast} />
       </Animated.View>
     </>
   );
