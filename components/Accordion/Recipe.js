@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ({ list }) => {
+const Recipe = ({ list }) => {
   const [open, setOpen] = useState(false);
   const transition = useTransition(
     open,
@@ -80,7 +80,6 @@ export default ({ list }) => {
               borderBottomLeftRadius: bottomRadius,
               borderBottomRightRadius: bottomRadius
             },
-            
           ]}
         >
           <View style={styles.line}>
@@ -126,5 +125,7 @@ export default ({ list }) => {
         <RecipeExpand time={list.time} difficulty={list.difficulty} isLast={list.isLast} />
       </Animated.View>
     </>
-  );
-};
+  )
+}
+
+export default Recipe;
