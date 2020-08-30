@@ -1,46 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { Recipe } from "../components/Accordion";
 import Ionicons from "react-native-vector-icons/Ionicons";
-
-const lists = [
-    {
-      beverageName: "weasel coffee",
-      country: "Vietnam",
-      creator: "Huyen Pham",
-      time: "4:00",
-      difficulty: "Medium"
-    },
-    {
-      beverageName: "cappuccino",
-      country: "Korea",
-      creator: "Tan Truc",
-      time: "2:00",
-      difficulty: "Easy"
-    },
-    {
-      beverageName: "espresso",
-      country: "Japan",
-      creator: "Quynh Han",
-      time: "5:50",
-      difficulty: "Hard"
-    },
-    {
-      beverageName: "espresso",
-      country: "Japan",
-      creator: "Quynh Han",
-      time: "5:50",
-      difficulty: "Hard"
-    },
-    {
-      beverageName: "espresso",
-      country: "Japan",
-      creator: "Quynh Han",
-      time: "5:50",
-      difficulty: "Hard",
-      isLast: true
-    }
-]
 
 const styles = StyleSheet.create({
     container: {
@@ -68,6 +29,20 @@ const styles = StyleSheet.create({
 })
 
 const Feed = () => {
+
+    const [recipes, setRecipes] = useState([]);
+
+    useEffect(() => {
+      fetch(`http://192.168.1.9:3000/api/recipes`, {
+          method: 'GET'
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        setRecipes(responseJson)
+      })
+      .catch(error => console.error(error));
+    }, [])
+
     return (
     <View style={styles.container}>
         <ScrollView 
@@ -76,8 +51,8 @@ const Feed = () => {
         >
             <Text style={styles.title}>Feed</Text>
             {
-                lists.map((item, index) =>
-                <Recipe key={index} list={item}/>)
+                recipes.map((item, index) =>
+                <Recipe key={index} recipe={item}/>)
             }
             <View style={{ height: 30 }}/>
         </ScrollView>

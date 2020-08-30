@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Recipe = ({ list }) => {
+const Recipe = ({ recipe }) => {
   const [open, setOpen] = useState(false);
   const transition = useTransition(
     open,
@@ -83,11 +83,11 @@ const Recipe = ({ list }) => {
           ]}
         >
           <View style={styles.line}>
-            <Text style={styles.beverageName}>{list.beverageName}</Text>
+            <Text style={styles.beverageName}>{recipe.baverageName}</Text>
             <Chevron {...{transition}} />
           </View>
-          <View style={[styles.line, {marginVertical:10}]}>
-            <Text style={styles.countryName}>{list.country}</Text>
+          <View style={[styles.line, { marginVertical:10 }]}>
+            <Text style={styles.countryName}>{recipe.country}</Text>
             <View style={{ flexDirection: "row" }}>
               <View style={{ flexDirection: "row" }}>
                 <Image source={require("../../assets/icons/coffee-beans.png")}
@@ -109,12 +109,12 @@ const Recipe = ({ list }) => {
                 rounded
                 source={require("../../assets/images/test.gif")}
               />
-              <Text style={styles.userName}>{list.creator}</Text>
+              <Text style={styles.userName}>{recipe.creator}</Text>
             </View>
             <Rating 
               imageSize={16}
               readonly
-              startingValue={2}
+              startingValue={recipe.rating}
               type="custom"
               ratingBackgroundColor="#d2d2d2"
             />
@@ -122,7 +122,7 @@ const Recipe = ({ list }) => {
         </Animated.View>
       </TouchableWithoutFeedback>
       <Animated.View style={[styles.items, {height}]}>
-        <RecipeExpand time={list.time} difficulty={list.difficulty} isLast={list.isLast} />
+        <RecipeExpand time={recipe.time} difficulty={recipe.difficulty}/>
       </Animated.View>
     </>
   )
