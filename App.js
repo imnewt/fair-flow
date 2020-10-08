@@ -2,11 +2,17 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons"
 
+import {View} from "react-native"
+
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 // import Ionicons from "react-native-vector-icons/Ionicons"
 // import CartIconWithBadge from "./components/CartIconWithBadge"
 
 // import { CartProvider } from "./contexts/Cart"
+
+const thu = () => {
+  return <View/>
+}
 
 import FeedStackScreen from "./navigation/Feed"
 import LibraryStackScreen from "./navigation/Library"
@@ -14,11 +20,6 @@ import FavoritesStackScreen from "./navigation/Favorites"
 import SettingsStackScreen from "./navigation/Settings"
 
 const Tab = createBottomTabNavigator();
-
-// import EStyleSheet from 'react-native-extended-stylesheet';
-// import { Dimensions } from 'react-native'; 
-// const entireScreenWidth = Dimensions.get('window').width;
-// EStyleSheet.build({$rem: entireScreenWidth / 100});
 
 export default function App() {
   return (
@@ -52,9 +53,20 @@ export default function App() {
           },
           keyboardHidesTabBar: true
         }}
+        
       >
         <Tab.Screen name="Feed" component={FeedStackScreen}/>
         <Tab.Screen name="Library" component={LibraryStackScreen}/>
+        {/* <Tab.Screen name="test" options={{
+          // title: null,
+          tabBarIcon: <Ionicons name="ios-add" size={20} color="red"/>,
+          // tabBarLabel: null
+          // tabBarButton: 
+          
+          
+        }}
+        // component={thu}
+        /> */}
         <Tab.Screen name="Favorites" component={FavoritesStackScreen}/>
         <Tab.Screen name="Settings" component={SettingsStackScreen}/>
       </Tab.Navigator>

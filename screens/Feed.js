@@ -33,7 +33,7 @@ const Feed = () => {
     const [recipes, setRecipes] = useState([]);
 
     useEffect(() => {
-      fetch(`http://192.168.1.9:3000/api/recipes`, {
+      fetch(`http://192.168.1.6:3000/api/recipes`, {
           method: 'GET'
       })
       .then((response) => response.json())
