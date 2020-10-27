@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 
 import LoginScreen from "./screens/Login"
+import RegisterScreen from "./screens/Register"
 import FeedStackScreen from "./navigation/Feed"
 import LibraryStackScreen from "./navigation/Library"
 import FavoritesStackScreen from "./navigation/Favorites"
@@ -78,6 +79,7 @@ export default function App() {
         }}
       >
         <RootStack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+        <RootStack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
         <RootStack.Screen name="Main" component={Main} options={{ headerShown: false }} />
       </RootStack.Navigator>
     </NavigationContainer>
