@@ -21,13 +21,7 @@ router.post('/users/login', async (req, res) => {
                 message: "Error while login"
             })
         }
-        if (user.length === 0) {
-            return res.send({
-                success: false,
-                message: "User does not exist"
-            })
-        }
-        else if (user.length > 0) {
+        else {
             if (user[0].password === password) {
                 return res.send({
                     success: true,

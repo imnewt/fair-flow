@@ -1,1 +1,1 @@
-module.exports.HOST = "http://172.16.9.139:3000"
+module.exports.HOST = "http://192.168.1.11:3000"

@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { View, Image, Text } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import EStyleSheet from 'react-native-extended-stylesheet';
-import { Input, Button, Divider } from 'react-native-elements';
+import { Input, Button, Divider, Overlay } from 'react-native-elements';
 import Ionicons from "react-native-vector-icons/Ionicons"
 import { HOST } from "../utils"
 import Logo from "../assets/images/logo.jpg";
@@ -13,8 +13,13 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [errEmail, setErrEmail] = useState("");
     const [errPass, setErrPass] = useState("");
-    const [modalVisible, setModalVisible] = useState(false);
+    const [visible, setVisible] = useState(false);
 
+    const toggleOverlay = () => {
+        navigation.navigate("Main")
+        setVisible(false);
+    };
+    
     const handleLogin = () => {
         setErrEmail("");
         setErrPass("");
@@ -41,7 +46,7 @@ const Login = () => {
             }).then(res => res.json())
             .then(json => {
                 if (json.success) {
-                    // SUCCESS NOTIFY HERE
+                    setVisible(true);
                 }
                 else {
                     setErrPass("Wrong password!");
@@ -90,6 +95,16 @@ const Login = () => {
                 buttonStyle={styles.button}
                 onPress={() => navigation.navigate("Register")}
             />
+            <Overlay 
+                isVisible={visible}
+                onBackdropPress={toggleOverlay}
+                overlayStyle={{ borderRadius: 20 }}
+            >
+                <View style={styles.overlay}>
+                    <Ionicons name="ios-checkmark-circle-outline" size={80} color="#109648"/>
+                    <Text style={styles.modalText}>Login Success!</Text>
+                </View>
+            </Overlay>
         </View>
     )
 }
@@ -98,10 +113,10 @@ const styles = EStyleSheet.create({
     container: {
         backgroundColor: "#fff",
         flex: 1,
-        paddingHorizontal: "5rem"
+        paddingHorizontal: "5rem",
+        justifyContent: "center"
     },
     logo: {
-        marginTop: "7rem",
         alignSelf: "center",
         width: "100%"
     },
@@ -129,6 +144,18 @@ const styles = EStyleSheet.create({
     dividerText: {
         marginHorizontal: "4rem",
         fontSize: "4rem"
+    },
+    overlay: {
+        backgroundColor: "#fff",
+        alignItems: "center",
+        paddingVertical: "8rem",
+        paddingHorizontal: "15rem",
+        borderRadius: 120
+    },
+    modalText: {
+        paddingTop: "3rem",
+        fontSize: "5rem",
+        fontWeight: "900"
     }
 })
 
