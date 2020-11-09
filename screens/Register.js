@@ -2,37 +2,85 @@ import React, { useState } from "react"
 import { View, Image, Text } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import EStyleSheet from 'react-native-extended-stylesheet';
-import { Input, Button, Divider } from 'react-native-elements';
+import { Input, Button, Divider, Overlay } from 'react-native-elements';
 import Ionicons from "react-native-vector-icons/Ionicons"
-
+import { HOST } from "../utils"
 import Logo from "../assets/images/logo.jpg";
 
-const Register = props => {
+const Register = () => {
     const navigation = useNavigation();
-    const [username, setUsername] = useState("");
-    const [phone, setPhone] = useState("");
+    const [email, setEmail] = useState("");
+    const [displayName, setDisplayName] = useState("");
     const [password, setPassword] = useState("");
-    const [errMessage, setErrMessage] = useState(null);
-    const [modalVisible, setModalVisible] = useState(false);
+    const [errEmail, setErrEmail] = useState("");
+    const [errName, setErrName] = useState("");
+    const [errPass, setErrPass] = useState("");
+    const [visible, setVisible] = useState(false);
+
+    const toggleOverlay = () => {
+        navigation.navigate("Main")
+        setVisible(false);
+    };
+
+    const createUser = () => {
+        setErrEmail("");
+        setErrName("");
+        setErrPass("");
+        if (!email) {
+            setErrEmail("This field can not be blank!")
+        }
+        else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
+        {
+            setErrEmail("Your email address is invalid!")
+        }
+        if (!displayName) {
+            setErrName("This field can not be blank!");
+        }
+        if (!password) {
+            setErrPass("This field can not be blank!");
+        }
+        else {
+            fetch(`${HOST}/api/users/create`, {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email, displayName, password
+                })
+            }).then(res => res.json())
+            .then(json => {
+                if (json.success) {
+                    setVisible(true);
+                }
+                else {
+                    setErrEmail("Email has been used for another account!");
+                }
+            })
+        }
+    }
 
     return (
         <View style={styles.container}>
             <Image source={Logo} style={styles.logo}/>
             <Input
-                placeholder="Username"
+                placeholder="Email"
                 placeholderTextColor="#3F4350"
                 leftIcon={ <Ionicons name="ios-person" size={25} color="#3F4350" /> }
                 inputStyle={styles.input}
-                onChangeText={username => setUsername(username)}
-                value={username}
+                onChangeText={email => setEmail(email)}
+                value={email}
+                errorMessage={errEmail}
             />
             <Input
-                placeholder="Phone number"
+                placeholder="Display name"
                 placeholderTextColor="#3F4350"
                 leftIcon={ <Ionicons name="ios-phone-portrait-sharp" size={25} color="#3F4350" /> }
                 inputStyle={styles.input}
-                onChangeText={phone => setPhone(phone)}
-                value={phone}
+                onChangeText={displayName => setDisplayName(displayName)}
+                value={displayName}
+                errorMessage={errName}
             />
             <Input
                 placeholder="Password"
@@ -42,12 +90,13 @@ const Register = props => {
                 inputStyle={styles.input}
                 onChangeText={password => setPassword(password)}
                 value={password}
+                errorMessage={errPass}
             />
             <Button
                 title="Sign up"
                 titleStyle={styles.title}
                 buttonStyle={[styles.button, { backgroundColor: "#2ea7e0" }]}
-                onPress={() => navigation.navigate("Main")}
+                onPress={createUser}
             />
             <View style={styles.divider}>
                 <Divider style={{width:"43%",height:0.8}}/>
@@ -61,6 +110,16 @@ const Register = props => {
                 buttonStyle={styles.button}
                 onPress={() => navigation.navigate("Login")}
             />
+            <Overlay 
+                isVisible={visible}
+                onBackdropPress={toggleOverlay}
+                overlayStyle={{ borderRadius: 20 }}
+            >
+                <View style={styles.overlay}>
+                    <Ionicons name="ios-checkmark-circle-outline" size={80} color="#109648"/>
+                    <Text style={styles.modalText}>User Created!</Text>
+                </View>
+            </Overlay>
         </View>
     )
 }
@@ -72,7 +131,6 @@ const styles = EStyleSheet.create({
         paddingHorizontal: "5rem"
     },
     logo: {
-        // marginTop: "7rem",
         alignSelf: "center",
         width: "100%"
     },
@@ -100,6 +158,18 @@ const styles = EStyleSheet.create({
     dividerText: {
         marginHorizontal: "4rem",
         fontSize: "4rem"
+    },
+    overlay: {
+        backgroundColor: "#fff",
+        alignItems: "center",
+        paddingVertical: "8rem",
+        paddingHorizontal: "15rem",
+        borderRadius: 120
+    },
+    modalText: {
+        paddingTop: "3rem",
+        fontSize: "5rem",
+        fontWeight: "900"
     }
 })
 
