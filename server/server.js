@@ -3,7 +3,7 @@ var path = require("path");
 var bodyParser = require("body-parser");
 
 var index = require("./routes/index");
-// var recipes = require("./routes/recipes");
+var tasks = require("./routes/tasks");
 var users = require("./routes/users");
 
 var app = express();
@@ -24,5 +24,5 @@ app.use(bodyParser.urlencoded({ extended:true }));
 
 //Routes
 app.use("/", index);
-// app.use("/api", recipes);
+app.use("/api", tasks);
 app.use("/api", users);

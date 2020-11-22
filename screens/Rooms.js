@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
-import { Recipe } from "../components/Accordion";
+// import { Recipe } from "../components/Accordion";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 const styles = StyleSheet.create({
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     },
     btn: {
       position: "absolute",
-      backgroundColor:"#FF5035",
+      backgroundColor:"#2ea7e0",
       borderRadius: 99,
       width: 70,
       height: 70,
@@ -28,20 +28,11 @@ const styles = StyleSheet.create({
     }
 })
 
-const Feed = () => {
+const Rooms = () => {
 
     const [recipes, setRecipes] = useState([]);
 
-    useEffect(() => {
-      fetch(`http://192.168.1.6:3000/api/recipes`, {
-          method: 'GET'
-      })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        setRecipes(responseJson)
-      })
-      .catch(error => console.error(error));
-    }, [])
+    
 
     return (
     <View style={styles.container}>
@@ -49,11 +40,11 @@ const Feed = () => {
             style={{ padding: 16 }}
             showsVerticalScrollIndicator={false}
         >
-            <Text style={styles.title}>Feed</Text>
-            {
+            <Text style={styles.title}>Rooms</Text>
+            {/* {
                 recipes.map((item, index) =>
                 <Recipe key={index} recipe={item}/>)
-            }
+            } */}
             <View style={{ height: 30 }}/>
         </ScrollView>
         <View style={styles.btn}>
@@ -63,4 +54,4 @@ const Feed = () => {
     )
 }
 
-export default Feed;
+export default Rooms;

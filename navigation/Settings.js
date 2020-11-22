@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack"
 // import Ionicons from "react-native-vector-icons/Ionicons"
 // import LinearGradient from "react-native-linear-gradient"
 
-import FeedScreen from "../screens/Feed"
+import SettingsScreen from "../screens/Settings"
 
 const SettingsStack = createStackNavigator();
 
@@ -22,7 +22,7 @@ export default function SettingsStackScreen() {
     //     headerBackground: () => <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={["#ff9966", "#ff5e62"]} style={{flex: 1}}/>
     //   }}
     >
-      <SettingsStack.Screen name="Feed" component={FeedScreen} options={{ headerShown: false }}/>
+      <SettingsStack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: false }}/>
     </SettingsStack.Navigator>
   )
 }

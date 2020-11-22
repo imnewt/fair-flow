@@ -6,6 +6,7 @@ import { Input, Button, Divider, Overlay } from 'react-native-elements';
 import Ionicons from "react-native-vector-icons/Ionicons"
 import { HOST } from "../utils"
 import Logo from "../assets/images/logo.jpg";
+// import store from "../store"
 
 const Login = () => {
     const navigation = useNavigation();

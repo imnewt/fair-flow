@@ -3,13 +3,13 @@ import { createStackNavigator } from "@react-navigation/stack"
 // import Ionicons from "react-native-vector-icons/Ionicons"
 // import LinearGradient from "react-native-linear-gradient"
 
-import FeedScreen from "../screens/Feed"
+import RoomsScreen from "../screens/Rooms"
 
-const FeedStack = createStackNavigator();
+const RoomsStack = createStackNavigator();
 
-export default function FeedStackScreen() {
+export default function RoomsStackScreen() {
   return (
-    <FeedStack.Navigator 
+    <RoomsStack.Navigator 
     //   initialRouteName="Home" 
     //   screenOptions={{
     //     headerTitleAlign: "center",
@@ -22,7 +22,7 @@ export default function FeedStackScreen() {
     //     headerBackground: () => <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={["#ff9966", "#ff5e62"]} style={{flex: 1}}/>
     //   }}
     >
-      <FeedStack.Screen name="Feed" component={FeedScreen} options={{ headerShown: false }}/>
-    </FeedStack.Navigator>
+      <RoomsStack.Screen name="Rooms" component={RoomsScreen} options={{ headerShown: false }}/>
+    </RoomsStack.Navigator>
   )
 }
