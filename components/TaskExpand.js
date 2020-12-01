@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, Dimensions } from "react-native";
+import { Text, View, Dimensions, TextInput } from "react-native";
 import ProgressCircle from 'react-native-progress-circle'
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { Button, Divider, Overlay } from 'react-native-elements';
@@ -8,11 +8,17 @@ export const LIST_ITEM_HEIGHT = Dimensions.get("window").width / 100 * 61.5;
 
 const TaskExpand = ({ description, progress }) => {
   const [visible, setVisible] = useState(false);
+  const [newProgress, setNewProgress] = useState(0);
+  const [err, setErr] = useState("");
 
   const toggleOverlay = () => {
-      // navigation.navigate("Main")
     setVisible(false);
   }
+
+  const updateProgress = () => {
+
+  }
+
   return (
     <View style={styles.container}>
       <Divider style={styles.divider}/>
@@ -41,11 +47,27 @@ const TaskExpand = ({ description, progress }) => {
       <Overlay 
         isVisible={visible}
         onBackdropPress={toggleOverlay}
-        overlayStyle={{ borderRadius: 10, marginHorizontal: 20 }}
+        overlayStyle={{ width: "90%", borderRadius: 10, marginHorizontal: 20 }}
       >
         <View style={styles.overlay}>
           <Text style={styles.title}>Description</Text>
           <Text style={styles.description}>{description}</Text>
+          <Text style={styles.title}>Progress</Text>
+          <TextInput 
+            style={styles.input}
+            keyboardType="number-pad"
+            onChangeText={newProgress => setNewProgress(newProgress)}
+            value={newProgress}
+          />
+          {
+            err ? <Text>Progress must be an integer from 0 to 100!</Text> : null
+          }
+          <Button
+            title="update progress"
+            titleStyle={styles.buttonText}
+            buttonStyle={styles.button}
+            onPress={updateProgress}
+          />
         </View>
       </Overlay>
     </View>
@@ -75,13 +97,27 @@ const styles = EStyleSheet.create({
     color: "#9B9B9B"
   },
   description: {
-    marginTop: "1rem",
+    marginVertical: "1rem",
     fontSize: "5rem",
     textTransform: "capitalize"
   },
   progress: {
     alignItems: "center",
     marginTop: "4rem"
+  },
+  input: {
+    backgroundColor: "#eee",
+    marginTop: "3rem",
+    height: "12rem",
+    width: "100%",
+    padding: "2rem",
+    borderRadius: 5,
+    shadowColor: "#000",
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 0 },
+    elevation: 1,
+    fontSize: "4rem"
   },
   button: {
     backgroundColor: "#2ea7e0",
@@ -98,11 +134,7 @@ const styles = EStyleSheet.create({
   },
   overlay: {
     backgroundColor: "#fff",
-    // alignItems: "center",
-    marginHorizontal: "3rem",
-    // paddingVertical: "8rem",
-    // paddingHorizontal: "15rem",
-    // borderRadius: 120
+    margin: "3rem"
   },
   modalText: {
       paddingTop: "3rem",

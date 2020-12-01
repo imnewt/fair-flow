@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { View, Image, Text } from "react-native"
+import { View, ScrollView, Image, Text } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { Input, Button, Divider, Overlay } from 'react-native-elements';
@@ -62,7 +62,7 @@ const Register = () => {
     }
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <Image source={Logo} style={styles.logo}/>
             <Input
                 placeholder="Email"
@@ -120,7 +120,7 @@ const Register = () => {
                     <Text style={styles.modalText}>User Created!</Text>
                 </View>
             </Overlay>
-        </View>
+        </ScrollView>
     )
 }
 
@@ -128,7 +128,7 @@ const styles = EStyleSheet.create({
     container: {
         backgroundColor: "#fff",
         flex: 1,
-        paddingHorizontal: "5rem"
+        paddingHorizontal: 16
     },
     logo: {
         alignSelf: "center",
@@ -143,14 +143,13 @@ const styles = EStyleSheet.create({
         fontSize: "4rem"
     },
     button: {
-        marginTop: "3rem",
+        marginVertical: "3rem",
         borderWidth: "0.3rem",
         borderColor: "#2ea7e0",
         paddingVertical: "3.5rem",
         borderRadius: 10
     },
     divider: {
-        marginTop: "3rem",
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center"

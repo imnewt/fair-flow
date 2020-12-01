@@ -50,7 +50,12 @@ const Login = () => {
                     setVisible(true);
                 }
                 else {
-                    setErrPass("Wrong password!");
+                    if (json.in === "email") {
+                        setErrEmail(json.message)
+                    }
+                    else {
+                        setErrPass(json.message)
+                    }
                 }
             })
         }
@@ -114,7 +119,7 @@ const styles = EStyleSheet.create({
     container: {
         backgroundColor: "#fff",
         flex: 1,
-        paddingHorizontal: "5rem",
+        paddingHorizontal: 16,
         justifyContent: "center"
     },
     logo: {

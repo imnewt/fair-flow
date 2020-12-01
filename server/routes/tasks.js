@@ -11,4 +11,26 @@ router.get('/tasks', async (req, res) => {
     res.send(tasks);
 })
 
+// UPDATE PROGRESS
+// router.post('/users/updateProgress', async (req, res) => {
+//     const { user, newPassword } = req.body;
+//     await User.findOneAndUpdate(
+//         { _id: user._id},
+//         { $set: { password: newPassword }},
+//         (err, user) => {
+//             if (err) {
+//                 res.send({
+//                     success: false,
+//                     message: "Error while updating password!"
+//                 })
+//             }
+//             else {
+//                 res.send({
+//                     success: true,
+//                     message: "Update success!"
+//                 })
+//             }
+//         })
+// })
+
 module.exports = router;
