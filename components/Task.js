@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, TouchableWithoutFeedback } from 'react-native';
 import Animated, { Easing } from 'react-native-reanimated';
 import { mix, bin, useTransition } from 'react-native-redash';
 import Chevron from './Chevron';
 import TaskExpand, { LIST_ITEM_HEIGHT } from './TaskExpand'
 import EStyleSheet from 'react-native-extended-stylesheet'
+import firestore from '@react-native-firebase/firestore';
 
 const { not, interpolate } = Animated;
 
@@ -25,6 +26,17 @@ const Task = ({ task }) => {
     outputRange: [8, 0]
   })
 
+  const [roomName, setRoomName] = useState("");
+
+  useEffect(() => {
+    const subscriber = firestore()
+      .collection('rooms')
+      .doc("Sa5FgXRveUQNfFQpt9C8")
+      .onSnapshot(querySnapshot => setRoomName(querySnapshot.data().name));
+    // Unsubscribe from events when no longer in use
+    return () => subscriber();
+  }, []);
+
   return (
     <View>
       <TouchableWithoutFeedback onPress={() => setOpen((prev) => !prev)}>
@@ -41,12 +53,12 @@ const Task = ({ task }) => {
             <Text style={styles.name}>{task.name}</Text>
             <Chevron {...{transition}} />
           </View>
-          <Text style={styles.info}>{task.roomName}</Text>
+          <Text style={styles.info}>{roomName}</Text>
           <Text style={styles.info}>{task.deadline}</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
       <Animated.View style={[styles.items, {height}]}>
-        <TaskExpand description={task.description} progress={task.progress}/>
+        <TaskExpand description={task.description} progress={task.progress} id={task.key}/>
       </Animated.View>
     </View>
   )

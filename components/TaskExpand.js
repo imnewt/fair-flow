@@ -3,20 +3,38 @@ import { Text, View, Dimensions, TextInput } from "react-native";
 import ProgressCircle from 'react-native-progress-circle'
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { Button, Divider, Overlay } from 'react-native-elements';
+import firestore from '@react-native-firebase/firestore';
 
 export const LIST_ITEM_HEIGHT = Dimensions.get("window").width / 100 * 61.5;
 
-const TaskExpand = ({ description, progress }) => {
+const TaskExpand = ({ description, progress, id }) => {
   const [visible, setVisible] = useState(false);
-  const [newProgress, setNewProgress] = useState(0);
-  const [err, setErr] = useState("");
+  const [newProgress, setNewProgress] = useState("");
+  const [err, setErr] = useState(false);
 
   const toggleOverlay = () => {
     setVisible(false);
+    setErr(false);
+    setNewProgress("");
   }
 
   const updateProgress = () => {
-
+    if (Number(newProgress) < 0 || Number(newProgress) > 100 || newProgress == "") {
+      setErr(true);
+    }
+    else {
+      firestore()
+      .collection('tasks')
+      .doc(id)
+      .update({
+        progress: Number(newProgress),
+      })
+      .then(() => {
+        setVisible(false);
+        setNewProgress("");
+        setErr(false);
+      });
+    }
   }
 
   return (
@@ -60,7 +78,7 @@ const TaskExpand = ({ description, progress }) => {
             value={newProgress}
           />
           {
-            err ? <Text>Progress must be an integer from 0 to 100!</Text> : null
+            err ? <Text style={styles.error}>Progress must be an integer from 0 to 100!</Text> : null
           }
           <Button
             title="update progress"
@@ -118,6 +136,12 @@ const styles = EStyleSheet.create({
     shadowOffset: { width: 0, height: 0 },
     elevation: 1,
     fontSize: "4rem"
+  },
+  error: {
+    color: "red",
+    fontWeight: "bold",
+    alignSelf: "center",
+    marginTop: "4rem"
   },
   button: {
     backgroundColor: "#2ea7e0",

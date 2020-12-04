@@ -4,8 +4,8 @@ import { useNavigation } from "@react-navigation/native"
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { Input, Button, Divider, Overlay } from 'react-native-elements';
 import Ionicons from "react-native-vector-icons/Ionicons"
-import { HOST } from "../utils"
 import Logo from "../assets/images/logo.jpg";
+import auth from '@react-native-firebase/auth';
 
 const Register = () => {
     const navigation = useNavigation();
@@ -20,44 +20,36 @@ const Register = () => {
     const toggleOverlay = () => {
         navigation.navigate("Main")
         setVisible(false);
+        setEmail("");
+        setPassword("");
     };
 
     const createUser = () => {
         setErrEmail("");
-        setErrName("");
         setErrPass("");
         if (!email) {
-            setErrEmail("This field can not be blank!")
+            setErrEmail("This field can not be blank!");
         }
         else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
         {
-            setErrEmail("Your email address is invalid!")
-        }
-        if (!displayName) {
-            setErrName("This field can not be blank!");
+            setErrEmail("Your email address is invalid!");
         }
         if (!password) {
             setErrPass("This field can not be blank!");
         }
         else {
-            fetch(`${HOST}/api/users/create`, {
-                method: "POST",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    email, displayName, password
-                })
-            }).then(res => res.json())
-            .then(json => {
-                if (json.success) {
-                    setVisible(true);
-                }
-                else {
-                    setErrEmail("Email has been used for another account!");
-                }
+            auth().createUserWithEmailAndPassword(email, password)
+            .then(() => {
+                setVisible(true);
             })
+            .catch(error => {
+                if (error.code === 'auth/weak-password') {
+                    setErrPass("Weak password!")
+                }
+                else if (error.code === 'auth/email-already-in-use') {
+                    setErrEmail("Email already in use!")
+                }
+            });
         }
     }
 

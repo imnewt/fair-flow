@@ -4,9 +4,9 @@ import { useNavigation } from "@react-navigation/native"
 import EStyleSheet from 'react-native-extended-stylesheet';
 import { Input, Button, Divider, Overlay } from 'react-native-elements';
 import Ionicons from "react-native-vector-icons/Ionicons"
-import { HOST } from "../utils"
 import Logo from "../assets/images/logo.jpg";
 // import store from "../store"
+import auth from '@react-native-firebase/auth';
 
 const Login = () => {
     const navigation = useNavigation();
@@ -19,6 +19,8 @@ const Login = () => {
     const toggleOverlay = () => {
         navigation.navigate("Main")
         setVisible(false);
+        setEmail("");
+        setPassword("");
     };
     
     const handleLogin = () => {
@@ -35,31 +37,21 @@ const Login = () => {
             setErrPass("This field can not be blank!");
         }
         else {
-            fetch(`${HOST}/api/users/login`, {
-                method: "POST",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    email, password
-                })
-            }).then(res => res.json())
-            .then(json => {
-                if (json.success) {
-                    setVisible(true);
-                }
-                else {
-                    if (json.in === "email") {
-                        setErrEmail(json.message)
-                    }
-                    else {
-                        setErrPass(json.message)
-                    }
-                }
+            auth().signInWithEmailAndPassword(email, password)
+            .then(() => {
+                setVisible(true);
             })
+            .catch(error => {
+                if (error.code === 'auth/wrong-password') {
+                    setErrPass("Wrong password!")
+                }
+                else if (error.code === 'auth/user-not-found') {
+                    setErrEmail("User not found!")
+                }
+            });
         }
     }
+
 
     return (
         <View style={styles.container}>

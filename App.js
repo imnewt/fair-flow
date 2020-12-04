@@ -65,7 +65,7 @@ export default function App() {
     <NavigationContainer>
       {/* <Provider store={store}> */}
         <RootStack.Navigator 
-          initialRouteName="Login"
+          initialRouteName="Main"
           screenOptions={{
             headerTitle: null,
             headerTransparent: true,

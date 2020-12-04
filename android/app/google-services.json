@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "827930147903",
+    "project_id": "fair-flow",
+    "storage_bucket": "fair-flow.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:827930147903:android:566b84e3e91e82345a8c8a",
+        "android_client_info": {
+          "package_name": "com.homemadedrink"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "827930147903-78q3es84rvic5irdnhcveo3frprrs78e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBI4GV6_Id17wwcNafPgl5syOb-G6cyr2E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "827930147903-78q3es84rvic5irdnhcveo3frprrs78e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
