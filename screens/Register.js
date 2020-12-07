@@ -5,7 +5,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import { Input, Button, Divider, Overlay } from 'react-native-elements';
 import Ionicons from "react-native-vector-icons/Ionicons"
 import Logo from "../assets/images/logo.jpg";
-import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 const Register = () => {
     const navigation = useNavigation();
@@ -16,16 +16,19 @@ const Register = () => {
     const [errName, setErrName] = useState("");
     const [errPass, setErrPass] = useState("");
     const [visible, setVisible] = useState(false);
+    const [users, setUsers] = useState([]);
 
     const toggleOverlay = () => {
         navigation.navigate("Main")
         setVisible(false);
         setEmail("");
+        setDisplayName("");
         setPassword("");
     };
 
-    const createUser = () => {
+    const createUser = async () => {
         setErrEmail("");
+        setErrName("");
         setErrPass("");
         if (!email) {
             setErrEmail("This field can not be blank!");
@@ -34,22 +37,40 @@ const Register = () => {
         {
             setErrEmail("Your email address is invalid!");
         }
+        if (!displayName) {
+            setErrName("This field can not be blank!");
+        }
         if (!password) {
             setErrPass("This field can not be blank!");
         }
         else {
-            auth().createUserWithEmailAndPassword(email, password)
-            .then(() => {
-                setVisible(true);
-            })
-            .catch(error => {
-                if (error.code === 'auth/weak-password') {
-                    setErrPass("Weak password!")
-                }
-                else if (error.code === 'auth/email-already-in-use') {
-                    setErrEmail("Email already in use!")
-                }
+            const subcriber = await firestore()
+            .collection('users')
+            .onSnapshot(querySnapshot => {
+                const users = [];
+        
+                querySnapshot.forEach(documentSnapshot => {
+                    users.push({
+                    ...documentSnapshot.data(),
+                    key: documentSnapshot.id,
+                });
+                });
+                setUsers(users);
             });
+            const findUser = users.find(user => user.email === email);
+            if (findUser) {
+                setErrEmail("Email has been used for another account!");
+            }
+            else {
+                firestore()
+                .collection('users')
+                .add({
+                    email: email,
+                    displayName: displayName,
+                    password: password,
+                })
+                .then(() => setVisible(true))
+            }
         }
     }
 

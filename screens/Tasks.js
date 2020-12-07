@@ -9,50 +9,50 @@ const Tasks = () => {
 
     useEffect(() => {
         const subscriber = firestore()
-          .collection('tasks')
-          .onSnapshot(querySnapshot => {
+        .collection('tasks')
+        .onSnapshot(querySnapshot => {
             const tasks = [];
-      
+    
             querySnapshot.forEach(documentSnapshot => {
                 tasks.push({
                 ...documentSnapshot.data(),
                 key: documentSnapshot.id,
-              });
+            });
             });
             setTasks(tasks);
-          });
+        });
         // Unsubscribe from events when no longer in use
         return () => subscriber();
-      }, []);
+    }, []);
 
     return (
-    <View style={styles.container}>
-        <ScrollView 
-            style={{ padding: 16 }}
-            showsVerticalScrollIndicator={false}
-        >
-            <Text style={styles.title}>Tasks</Text>
-            <FlatList
+        <View style={styles.container}>
+            <ScrollView 
+                style={{ padding: 16 }}
                 showsVerticalScrollIndicator={false}
-                data={tasks}
-                renderItem={({ item }) => <Task task={item}/>}
-                keyExtractor={item => item.key}
-            />
-            <View style={{ height: 30 }}/>
-        </ScrollView>
-    </View>
+            >
+                <Text style={styles.title}>Tasks</Text>
+                <FlatList
+                    showsVerticalScrollIndicator={false}
+                    data={tasks}
+                    renderItem={({ item }) => <Task task={item}/>}
+                    keyExtractor={item => item.key}
+                />
+                <View style={{ height: 30 }}/>
+            </ScrollView>
+        </View>
     )
 }
 
 const styles = EStyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: "#F0F2EF"
+        flex: 1,
+        backgroundColor: "#F0F2EF"
     },
     title: {
-      fontSize: "8rem",
-      fontWeight: "bold",
-      color: "#C2C1BF"
+        fontSize: "8rem",
+        fontWeight: "bold",
+        color: "#C2C1BF"
     }
 })
 

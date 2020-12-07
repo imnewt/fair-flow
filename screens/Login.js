@@ -5,8 +5,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import { Input, Button, Divider, Overlay } from 'react-native-elements';
 import Ionicons from "react-native-vector-icons/Ionicons"
 import Logo from "../assets/images/logo.jpg";
-// import store from "../store"
-import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 const Login = () => {
     const navigation = useNavigation();
@@ -37,17 +36,23 @@ const Login = () => {
             setErrPass("This field can not be blank!");
         }
         else {
-            auth().signInWithEmailAndPassword(email, password)
-            .then(() => {
-                setVisible(true);
-            })
-            .catch(error => {
-                if (error.code === 'auth/wrong-password') {
-                    setErrPass("Wrong password!")
-                }
-                else if (error.code === 'auth/user-not-found') {
-                    setErrEmail("User not found!")
-                }
+            firestore()
+            .collection('users')
+            .onSnapshot(querySnapshot => {
+                querySnapshot.forEach(documentSnapshot => {
+                    const user = documentSnapshot.data();
+                    if (email === user.email) {
+                        if (password === user.password) {
+                            setVisible(true);
+                        }
+                        else {
+                            setErrPass("Wrong password!")
+                        }
+                    }
+                    else {
+                        setErrEmail("User not found!")
+                    }
+                });
             });
         }
     }
