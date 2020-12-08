@@ -15,9 +15,9 @@ const Tasks = () => {
     
             querySnapshot.forEach(documentSnapshot => {
                 tasks.push({
-                ...documentSnapshot.data(),
-                key: documentSnapshot.id,
-            });
+                    ...documentSnapshot.data(),
+                    key: documentSnapshot.id,
+                });
             });
             setTasks(tasks);
         });

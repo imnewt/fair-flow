@@ -51,26 +51,44 @@ const Register = () => {
         
                 querySnapshot.forEach(documentSnapshot => {
                     users.push({
-                    ...documentSnapshot.data(),
-                    key: documentSnapshot.id,
+                        ...documentSnapshot.data(),
+                        key: documentSnapshot.id,
+                    });
                 });
-                });
-                setUsers(users);
+                const findUser = users.find(user => user.email === email);
+                if (findUser) {
+                    setErrEmail("Email has been used for another account!");
+                }
+                else {
+                    firestore()
+                    .collection('users')
+                    .add({
+                        email: email,
+                        displayName: displayName,
+                        password: password,
+                    })
+                    .then(() => {
+                        setVisible(true);
+                        setErrEmail("");
+                        setErrName("");
+                        setErrPass("");
+                    })
+                }
             });
-            const findUser = users.find(user => user.email === email);
-            if (findUser) {
-                setErrEmail("Email has been used for another account!");
-            }
-            else {
-                firestore()
-                .collection('users')
-                .add({
-                    email: email,
-                    displayName: displayName,
-                    password: password,
-                })
-                .then(() => setVisible(true))
-            }
+            
+            // if (findUser) {
+            //     setErrEmail("Email has been used for another account!");
+            // }
+            // else {
+            //     firestore()
+            //     .collection('users')
+            //     .add({
+            //         email: email,
+            //         displayName: displayName,
+            //         password: password,
+            //     })
+            //     .then(() => setVisible(true))
+            // }
         }
     }
 

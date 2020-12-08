@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, ScrollView } from "react-native";
 // import { Recipe } from "../components/Accordion";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import EStyleSheet from 'react-native-extended-stylesheet';
+import firestore from '@react-native-firebase/firestore';
 
 const Room = ({ room, index }) => {
 
@@ -10,14 +11,14 @@ const Room = ({ room, index }) => {
 
     const isOdd = index % 2 == 0 ? true : false
 
-    useEffect(() => {
-        const subscriber = firestore()
-        .collection('rooms')
-        // .doc(task.roomId)
-        .onSnapshot(querySnapshot => setRoomName(querySnapshot.data().name));
-        // Unsubscribe from events when no longer in use
-        return () => subscriber();
-    }, []);
+    // useEffect(() => {
+    //     const subscriber = firestore()
+    //     .collection('rooms')
+    //     // .doc(task.roomId)
+    //     .onSnapshot(querySnapshot => setRoomName(querySnapshot.data().name));
+    //     // Unsubscribe from events when no longer in use
+    //     return () => subscriber();
+    // }, []);
 
     const customStyles = EStyleSheet.create({
         containerStyle: {

@@ -22,7 +22,7 @@ const Login = () => {
         setPassword("");
     };
     
-    const handleLogin = () => {
+    const handleLogin = async () => {
         setErrEmail("");
         setErrPass("");
         if (!email) {
@@ -36,23 +36,28 @@ const Login = () => {
             setErrPass("This field can not be blank!");
         }
         else {
-            firestore()
+            const subcriber = await firestore()
             .collection('users')
             .onSnapshot(querySnapshot => {
+                const users = [];
                 querySnapshot.forEach(documentSnapshot => {
-                    const user = documentSnapshot.data();
-                    if (email === user.email) {
-                        if (password === user.password) {
-                            setVisible(true);
-                        }
-                        else {
-                            setErrPass("Wrong password!")
-                        }
+                    users.push({
+                        ...documentSnapshot.data(),
+                        key: documentSnapshot.id,
+                    });
+                });
+                const findUser = users.find(user => user.email === email);
+                if (findUser) {
+                    if (password === findUser.password) {
+                        setVisible(true);
                     }
                     else {
-                        setErrEmail("User not found!")
+                        setErrPass("Wrong password!")
                     }
-                });
+                }
+                else {
+                    setErrEmail("User not found!")
+                }
             });
         }
     }

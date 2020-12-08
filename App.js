@@ -3,15 +3,15 @@ import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 
-import { Provider } from 'react-redux';
-import store from "./store";
-
 import LoginScreen from "./screens/Login"
 import RegisterScreen from "./screens/Register"
 
 import TasksStackScreen from "./navigation/Tasks"
 import RoomsStackScreen from "./navigation/Rooms"
 import SettingsStackScreen from "./navigation/Settings"
+
+import stores from './stores';
+import { Provider } from 'mobx-react';
 
 import Ionicons from "react-native-vector-icons/Ionicons"
 import EStyleSheet from 'react-native-extended-stylesheet'
@@ -62,8 +62,8 @@ const Main = () => {
 const RootStack = createStackNavigator();
 export default function App() {
   return (
-    <NavigationContainer>
-      {/* <Provider store={store}> */}
+    <Provider {...stores}>
+      <NavigationContainer>
         <RootStack.Navigator 
           initialRouteName="Login"
           screenOptions={{
@@ -83,7 +83,7 @@ export default function App() {
           <RootStack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
           <RootStack.Screen name="Main" component={Main} options={{ headerShown: false }} />
         </RootStack.Navigator>
-      {/* </Provider> */}
-    </NavigationContainer>
+      </NavigationContainer>
+    </Provider>
   )
 }
