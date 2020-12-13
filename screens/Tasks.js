@@ -3,9 +3,12 @@ import { Text, View, ScrollView, FlatList } from "react-native";
 import Task from "../components/Task";
 import EStyleSheet from 'react-native-extended-stylesheet';
 import firestore from '@react-native-firebase/firestore';
+import { observer, inject } from 'mobx-react';
+// import UserStore from "../stores/UserStore";
 
-const Tasks = () => {
+const Tasks = inject("userStore")(observer(props => {
     const [tasks, setTasks] = useState([]);
+    const { userStore } = props;
 
     useEffect(() => {
         const subscriber = firestore()
@@ -19,7 +22,8 @@ const Tasks = () => {
                     key: documentSnapshot.id,
                 });
             });
-            setTasks(tasks);
+            const filteredTasks = tasks.filter(task => task.underTakerId === userStore.userData.key)
+            setTasks(filteredTasks);
         });
         // Unsubscribe from events when no longer in use
         return () => subscriber();
@@ -42,7 +46,7 @@ const Tasks = () => {
             </ScrollView>
         </View>
     )
-}
+}))
 
 const styles = EStyleSheet.create({
     container: {

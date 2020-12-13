@@ -1,24 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useDebugValue } from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 // import { Recipe } from "../components/Accordion";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import EStyleSheet from 'react-native-extended-stylesheet';
 import firestore from '@react-native-firebase/firestore';
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const Room = ({ room, index }) => {
 
-    const [recipes, setRecipes] = useState([]);
+    const [hostName, setHostName] = useState([]);
 
     const isOdd = index % 2 == 0 ? true : false
 
-    // useEffect(() => {
-    //     const subscriber = firestore()
-    //     .collection('rooms')
-    //     // .doc(task.roomId)
-    //     .onSnapshot(querySnapshot => setRoomName(querySnapshot.data().name));
-    //     // Unsubscribe from events when no longer in use
-    //     return () => subscriber();
-    // }, []);
+    useEffect(() => {
+        const subscriber = firestore()
+        .collection('users')
+        .doc(room.hostId)
+        .onSnapshot(querySnapshot => setHostName(querySnapshot.data().displayName));
+        // Unsubscribe from events when no longer in use
+        return () => subscriber();
+    }, []);
 
     const customStyles = EStyleSheet.create({
         containerStyle: {
@@ -28,10 +29,18 @@ const Room = ({ room, index }) => {
     });
 
     return (
-        <View style={[styles.container, customStyles.containerStyle]}>
-            <Text style={styles.roomName}>{room.name}</Text>
-            <Text style={styles.text}>Host:</Text>
-            <Text style={styles.text}>Members: {room.memberIds.length + 1}</Text>
+        <View 
+            style={[styles.container, customStyles.containerStyle]}
+        >
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => {}}
+                activeOpacity={.7}
+            >
+                <Text style={styles.roomName}>{room.name}</Text>
+                <Text style={styles.text}>Host: {hostName}</Text>
+                <Text style={styles.text}>Members: {room.memberIds.length + 1}</Text>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -41,13 +50,15 @@ const styles = EStyleSheet.create({
         flex: 1,
         backgroundColor: "#fff",
         marginVertical: "2rem",
-        padding: "4rem",
         borderRadius: 10,
         shadowColor: "#000",
         shadowOpacity: 0.3,
         shadowRadius: 10,
         shadowOffset: { width: 0, height: 0 },
         elevation: 1
+    },
+    button: {
+        padding: "4rem",
     },
     roomName: {
         fontSize: "5.5rem",

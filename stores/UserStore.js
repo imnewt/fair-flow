@@ -1,18 +1,17 @@
 import { makeObservable, observable, computed, action } from "mobx"
 
 class UserStore {
-    email = ""
-    id = ""
+    userData = null
 
     // @observable name = 'Khanh Duong' //#2
     // @observable age = 15 //#2
 
     constructor() {
         makeObservable(this, {
-            email: observable,
-            id: observable,
+            userData: observable,
             // isAdult: computed,
-            // increment: action
+            saveUserData: action,
+            wipeData: action
         })
         // makeObservable(this) //#2
     }
@@ -23,10 +22,13 @@ class UserStore {
     // }
 
     // @action //#2
-    // increment() {
-    //   this.age++
-    //   console.log('this.age', this.age)
-    // }
+    saveUserData(user) {
+        this.userData = user;
+    }
+
+    wipeData() {
+        this.userData = null
+    }
 }
 
 export default UserStore

@@ -81,7 +81,8 @@ const styles = EStyleSheet.create({
     name: {
         fontSize: "5.5rem",
         fontWeight: "bold",
-        textTransform: "capitalize"
+        textTransform: "capitalize",
+        width: "90%"
     },
     info: {
         fontSize: "4rem",

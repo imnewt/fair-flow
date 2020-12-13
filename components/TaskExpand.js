@@ -116,8 +116,7 @@ const styles = EStyleSheet.create({
   },
   description: {
     marginVertical: "1rem",
-    fontSize: "5rem",
-    textTransform: "capitalize"
+    fontSize: "5rem"
   },
   progress: {
     alignItems: "center",

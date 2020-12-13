@@ -19,7 +19,7 @@ const Register = () => {
     const [users, setUsers] = useState([]);
 
     const toggleOverlay = () => {
-        navigation.navigate("Main")
+        navigation.navigate("Login")
         setVisible(false);
         setEmail("");
         setDisplayName("");

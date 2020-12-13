@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { View, Image, Text } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import EStyleSheet from 'react-native-extended-stylesheet';
@@ -6,14 +6,21 @@ import { Input, Button, Divider, Overlay } from 'react-native-elements';
 import Ionicons from "react-native-vector-icons/Ionicons"
 import Logo from "../assets/images/logo.jpg";
 import firestore from '@react-native-firebase/firestore';
+import { observer, inject } from 'mobx-react';
 
-const Login = () => {
+const Login = inject("userStore")(observer(props => {
     const navigation = useNavigation();
+    const { userStore } = props;
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errEmail, setErrEmail] = useState("");
     const [errPass, setErrPass] = useState("");
     const [visible, setVisible] = useState(false);
+
+    useEffect(() => {
+        // console.log(userStore.userData)
+        // userStore.userData && navigation.navigate("Main");
+    })
 
     const toggleOverlay = () => {
         navigation.navigate("Main")
@@ -50,6 +57,7 @@ const Login = () => {
                 if (findUser) {
                     if (password === findUser.password) {
                         setVisible(true);
+                        userStore.saveUserData(findUser);
                     }
                     else {
                         setErrPass("Wrong password!")
@@ -61,7 +69,6 @@ const Login = () => {
             });
         }
     }
-
 
     return (
         <View style={styles.container}>
@@ -115,7 +122,7 @@ const Login = () => {
             </Overlay>
         </View>
     )
-}
+}))
 
 const styles = EStyleSheet.create({
     container: {
@@ -168,3 +175,4 @@ const styles = EStyleSheet.create({
 })
 
 export default Login;
+// export default observer(Login);
