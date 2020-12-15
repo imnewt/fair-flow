@@ -50,7 +50,7 @@ const Login = inject("userStore")(observer(props => {
                 querySnapshot.forEach(documentSnapshot => {
                     users.push({
                         ...documentSnapshot.data(),
-                        key: documentSnapshot.id,
+                        id: documentSnapshot.id,
                     });
                 });
                 const findUser = users.find(user => user.email === email);
@@ -175,4 +175,3 @@ const styles = EStyleSheet.create({
 })
 
 export default Login;
-// export default observer(Login);

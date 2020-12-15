@@ -75,20 +75,6 @@ const Register = () => {
                     })
                 }
             });
-            
-            // if (findUser) {
-            //     setErrEmail("Email has been used for another account!");
-            // }
-            // else {
-            //     firestore()
-            //     .collection('users')
-            //     .add({
-            //         email: email,
-            //         displayName: displayName,
-            //         password: password,
-            //     })
-            //     .then(() => setVisible(true))
-            // }
         }
     }
 

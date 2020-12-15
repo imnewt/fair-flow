@@ -1,31 +1,60 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, ScrollView, FlatList } from "react-native";
+import { Text, View, ScrollView, TextInput, TouchableOpacity, FlatList } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import EStyleSheet from 'react-native-extended-stylesheet';
 import firestore from '@react-native-firebase/firestore';
-
+import { observer, inject } from 'mobx-react';
+import { Overlay, Button } from "react-native-elements"
 import Room from "../components/Room"
 
-const Rooms = () => {
+const Rooms = inject("userStore")(observer(props => {
     const [rooms, setRooms] = useState([]);
+    const { userStore } = props;
+
+    const [roomName, setRoomName] = useState("");
+    const [errRoomName, setErrRoomName] = useState("");
+    const [visible, setVisible] = useState(false);
+
+    const toggleOverlay = () => {
+        setVisible(false);
+        setRoomName("");
+        setErrRoomName("");
+    };
 
     useEffect(() => {
         const subscriber = firestore()
         .collection('rooms')
         .onSnapshot(querySnapshot => {
             const rooms = [];
-    
             querySnapshot.forEach(documentSnapshot => {
                 rooms.push({
                     ...documentSnapshot.data(),
                     key: documentSnapshot.id,
                 });
             });
-            setRooms(rooms);
+            const filteredRooms = rooms.filter(room => room.hostId === userStore.userData.id || room.memberIds.includes(userStore.userData.id))
+            setRooms(filteredRooms);
         });
         // Unsubscribe from events when no longer in use
         return () => subscriber();
     }, []);
+
+    const createRoom = async () => {
+        setErrRoomName("");
+        if (!roomName) {
+            setErrRoomName("This field can not be blank!");
+        }
+        else {
+            firestore()
+            .collection('rooms')
+            .add({
+                name: roomName,
+                hostId: userStore.userData.id,
+                memberIds: [],
+            })
+            .then(() => setVisible(false))
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -43,12 +72,40 @@ const Rooms = () => {
                 />
                 <View style={{ height: 30 }}/>
             </ScrollView>
-            <View style={styles.btn}>
+            <TouchableOpacity
+                style={styles.btn}
+                activeOpacity={0.7}
+                onPress={() => setVisible(true)}
+            >
                 <Ionicons name="ios-add" color="white" size={30}/>
-            </View>
+            </TouchableOpacity>
+            <Overlay 
+                isVisible={visible}
+                onBackdropPress={toggleOverlay}
+                overlayStyle={{ width: "90%", borderRadius: 10 }}
+            >
+                <View style={styles.overlay}>
+                    <Text style={styles.overlayTitle}>Create new room</Text>
+                    <TextInput 
+                        style={styles.input}
+                        onChangeText={roomName => setRoomName(roomName)}
+                        value={roomName}
+                        placeholder="Enter room name here..."
+                    />
+                    {
+                        errRoomName ? <Text style={styles.error}>{errRoomName}</Text> : null
+                    }
+                    <Button
+                        title="Create"
+                        titleStyle={styles.buttonText}
+                        buttonStyle={styles.button}
+                        onPress={createRoom}
+                    />
+                </View>
+            </Overlay>
         </View>
     )
-}
+}))
 
 const styles = EStyleSheet.create({
     container: {
@@ -72,7 +129,51 @@ const styles = EStyleSheet.create({
       right: "5rem",
       opacity: 0.8,
       elevation: 5
-    }
+    },
+    overlay: {
+        backgroundColor: "#fff",
+        margin: "2rem"
+    },
+    overlayTitle: {
+        fontSize: "6rem",
+        fontWeight: "bold",
+        // color: "",
+        alignSelf: "center",
+        textTransform: "capitalize"
+    },
+    input: {
+        backgroundColor: "#eee",
+        marginTop: "3rem",
+        height: "12rem",
+        width: "100%",
+        padding: "2rem",
+        borderRadius: 5,
+        shadowColor: "#000",
+        shadowOpacity: 0.3,
+        shadowRadius: 10,
+        shadowOffset: { width: 0, height: 0 },
+        elevation: 1,
+        fontSize: "4rem"
+    },
+    error: {
+        color: "red",
+        fontWeight: "bold",
+        alignSelf: "center",
+        marginTop: "4rem"
+    },
+    button: {
+        backgroundColor: "#2ea7e0",
+        marginTop: "4rem",
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 5,
+        padding: "3rem"
+    },
+    buttonText: {
+        color: "#fff",
+        fontWeight: "bold",
+        textTransform: "uppercase"
+    },
 })
 
 export default Rooms;
