@@ -5,6 +5,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import firestore from '@react-native-firebase/firestore';
 import { observer, inject } from 'mobx-react';
 import { Overlay, Button } from "react-native-elements"
+import Header from "../components/Header"
 import Room from "../components/Room"
 
 const Rooms = inject("userStore")(observer(props => {
@@ -29,7 +30,7 @@ const Rooms = inject("userStore")(observer(props => {
             querySnapshot.forEach(documentSnapshot => {
                 rooms.push({
                     ...documentSnapshot.data(),
-                    key: documentSnapshot.id,
+                    id: documentSnapshot.id,
                 });
             });
             const filteredRooms = rooms.filter(room => room.hostId === userStore.userData.id || room.memberIds.includes(userStore.userData.id))
@@ -58,6 +59,7 @@ const Rooms = inject("userStore")(observer(props => {
 
     return (
         <View style={styles.container}>
+            {/* <Header title="Rooms"/> */}
             <ScrollView 
                 style={{ padding: 16 }}
                 showsVerticalScrollIndicator={false}

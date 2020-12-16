@@ -5,9 +5,10 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import EStyleSheet from 'react-native-extended-stylesheet';
 import firestore from '@react-native-firebase/firestore';
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native"
 
 const Room = ({ room, index }) => {
-
+    const navigation = useNavigation();
     const [hostName, setHostName] = useState([]);
 
     const isOdd = index % 2 == 0 ? true : false
@@ -34,7 +35,7 @@ const Room = ({ room, index }) => {
         >
             <TouchableOpacity
                 style={styles.button}
-                onPress={() => {}}
+                onPress={() => navigation.navigate("RoomDetail", { room })}
                 activeOpacity={.7}
             >
                 <Text style={styles.roomName}>{room.name}</Text>

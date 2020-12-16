@@ -18,7 +18,7 @@ const Tasks = inject("userStore")(observer(props => {
             querySnapshot.forEach(documentSnapshot => {
                 tasks.push({
                     ...documentSnapshot.data(),
-                    key: documentSnapshot.id,
+                    id: documentSnapshot.id,
                 });
             });
 
@@ -40,7 +40,7 @@ const Tasks = inject("userStore")(observer(props => {
                     showsVerticalScrollIndicator={false}
                     data={tasks}
                     renderItem={({ item }) => <Task task={item}/>}
-                    keyExtractor={item => item.key}
+                    keyExtractor={item => item.id}
                 />
                 <View style={{ height: 30 }}/>
             </ScrollView>

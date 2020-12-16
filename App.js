@@ -6,9 +6,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import LoginScreen from "./screens/Login"
 import RegisterScreen from "./screens/Register"
 
-import TasksStackScreen from "./navigation/Tasks"
-import RoomsStackScreen from "./navigation/Rooms"
-import SettingsStackScreen from "./navigation/Settings"
+import TasksStackScreen from "./stacks/Tasks"
+import RoomsStackScreen from "./stacks/Rooms"
+import SettingsStackScreen from "./stacks/Settings"
 
 import stores from './stores';
 import { Provider } from 'mobx-react';

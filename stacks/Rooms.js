@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack"
 // import LinearGradient from "react-native-linear-gradient"
 
 import RoomsScreen from "../screens/Rooms"
+import RoomDetailScreen from "../screens/RoomDetail"
 
 const RoomsStack = createStackNavigator();
 
@@ -23,6 +24,7 @@ export default function RoomsStackScreen() {
     //   }}
     >
       <RoomsStack.Screen name="Rooms" component={RoomsScreen} options={{ headerShown: false }}/>
+      <RoomsStack.Screen name="RoomDetail" component={RoomDetailScreen} options={{ headerShown: false }}/>
     </RoomsStack.Navigator>
   )
 }
