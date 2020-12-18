@@ -1,7 +1,10 @@
 import { makeObservable, observable, computed, action } from "mobx"
 
 class UserStore {
-    userData = null
+    // userData = null
+    userData = {
+        id: "Xuo2nGKAnMRbNLEL6IYp"
+    }
 
     // @observable name = 'Khanh Duong' //#2
     // @observable age = 15 //#2

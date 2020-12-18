@@ -6,7 +6,7 @@ import firestore from '@react-native-firebase/firestore';
 import { observer, inject } from 'mobx-react';
 import { Overlay, Button } from "react-native-elements"
 import Header from "../components/Header"
-import Room from "../components/Room"
+import { Room } from "../components/Room"
 
 const Rooms = inject("userStore")(observer(props => {
     const [rooms, setRooms] = useState([]);
@@ -69,7 +69,7 @@ const Rooms = inject("userStore")(observer(props => {
                     showsVerticalScrollIndicator={false}
                     data={rooms}
                     renderItem={({ item, index }) => <Room room={item} index={index}/>}
-                    keyExtractor={item => item.key}
+                    keyExtractor={item => item.id}
                     numColumns={2}
                 />
                 <View style={{ height: 30 }}/>
@@ -111,26 +111,26 @@ const Rooms = inject("userStore")(observer(props => {
 
 const styles = EStyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: "#F2F1ED"
+        flex: 1,
+        backgroundColor: "#F2F1ED"
     },
     title: {
-      fontSize: "8rem",
-      fontWeight: "bold",
-      color: "#C2C1BF"
+        fontSize: "8rem",
+        fontWeight: "bold",
+        color: "#C2C1BF"
     },
     btn: {
-      position: "absolute",
-      backgroundColor:"#2ea7e0",
-      borderRadius: 99,
-      width: "18rem",
-      height: "18rem",
-      justifyContent: "center",
-      alignItems: "center",
-      bottom: "5rem",
-      right: "5rem",
-      opacity: 0.8,
-      elevation: 5
+        position: "absolute",
+        backgroundColor:"#2ea7e0",
+        borderRadius: 99,
+        width: "18rem",
+        height: "18rem",
+        justifyContent: "center",
+        alignItems: "center",
+        bottom: "5rem",
+        right: "5rem",
+        opacity: 0.8,
+        elevation: 5
     },
     overlay: {
         backgroundColor: "#fff",
