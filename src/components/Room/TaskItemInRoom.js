@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import EStyleSheet from "react-native-extended-stylesheet"
 import firestore from '@react-native-firebase/firestore';
+
 const TaskItemInRoom = (props) => {
     const { name, underTakerId, progress} = props;
     const [underTakerName, setUnderTakerName] = useState("");
@@ -27,8 +28,7 @@ const TaskItemInRoom = (props) => {
 const styles = EStyleSheet.create({
     container: {
         flexDirection: "row",
-        // backgroundColor: "red",
-        justifyContent: "space-between",
+        justifyContent: "space-between"
     },
     taskName: {
         flex: 4,

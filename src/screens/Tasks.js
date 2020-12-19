@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, ScrollView, FlatList } from "react-native";
-import Task from "../components/Task";
+import { Task } from "../components/Task";
 import EStyleSheet from 'react-native-extended-stylesheet';
 import firestore from '@react-native-firebase/firestore';
 import { observer, inject } from 'mobx-react';

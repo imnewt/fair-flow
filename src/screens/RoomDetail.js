@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, FlatList } from 'react-native';
+import { Text, View, ScrollView, FlatList } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import firestore from '@react-native-firebase/firestore';
 import { observer, inject } from 'mobx-react';
 
 import { TaskItemInRoom } from "../components/Room"
+import { TouchableOpacity } from 'react-native-gesture-handler';
+// import 
 
 const RoomDetail = inject("userStore")(observer(props => {
     const { room } = props.route.params;
@@ -51,26 +53,33 @@ const RoomDetail = inject("userStore")(observer(props => {
     
     return (
         <View style={styles.container}>
-            <Text>{room.name}</Text>
-            {/* <Text>Member List:</Text>
-            <FlatList
-                showsVerticalScrollIndicator={false}
-                data={members}
-                renderItem={({ item }) => <Text>{item.displayName + item.id}</Text>}
-                keyExtractor={item => item.id}
-            /> */}
-            <Text style={styles.title}>Current tasks:</Text>
-            <FlatList
-                showsVerticalScrollIndicator={false}
-                data={tasks}
-                renderItem={({ item }) => 
-                    <TaskItemInRoom
-                        name={item.name}
-                        progress={item.progress}
-                        underTakerId={item.underTakerId}
-                    />}
-                keyExtractor={item => item.id}
-            />
+            <ScrollView>
+                <Text>{room.name}</Text>
+                <Text style={styles.title}>Current tasks:</Text>
+                <FlatList
+                    showsVerticalScrollIndicator={false}
+                    data={tasks}
+                    renderItem={({ item }) => 
+                        <TaskItemInRoom
+                            name={item.name}
+                            progress={item.progress}
+                            underTakerId={item.underTakerId}
+                        />}
+                    keyExtractor={item => item.id}
+                />
+                <Text style={styles.title}>Members:</Text>
+                <FlatList
+                    showsVerticalScrollIndicator={false}
+                    data={members}
+                    renderItem={({ item }) => <Text style={styles.text}>{item.displayName}</Text>}
+                    keyExtractor={item => item.id}
+                />
+            </ScrollView>
+            <TouchableOpacity
+                style={styles.button}
+            >
+                <Text style={styles.buttonText}>Add task</Text>
+            </TouchableOpacity>
         </View>
     )
     
@@ -83,7 +92,10 @@ const styles = EStyleSheet.create({
     title: {
         fontWeight: "bold",
         fontSize: "5rem",
-        marginBottom: "2rem"
+        marginVertical: "2rem"
+    },
+    text: {
+        fontSize: "4rem"
     }
 })
 

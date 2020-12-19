@@ -3,14 +3,14 @@ import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 
-import LoginScreen from "./screens/Login"
-import RegisterScreen from "./screens/Register"
+import LoginScreen from "./src/screens/Login"
+import RegisterScreen from "./src/screens/Register"
 
-import TasksStackScreen from "./stacks/Tasks"
-import RoomsStackScreen from "./stacks/Rooms"
-import SettingsStackScreen from "./stacks/Settings"
+import TasksStackScreen from "./src/stacks/Tasks"
+import RoomsStackScreen from "./src/stacks/Rooms"
+import SettingsStackScreen from "./src/stacks/Settings"
 
-import stores from './stores';
+import stores from './src/stores';
 import { Provider } from 'mobx-react';
 
 import Ionicons from "react-native-vector-icons/Ionicons"
