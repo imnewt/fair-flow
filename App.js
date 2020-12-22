@@ -20,6 +20,8 @@ import { Dimensions } from 'react-native';
 const entireScreenWidth = Dimensions.get('window').width;
 EStyleSheet.build({$rem: entireScreenWidth / 100});
 
+console.disableYellowBox = true;
+
 const Tab = createBottomTabNavigator();
 const Main = () => {
   return (

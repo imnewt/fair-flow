@@ -36,11 +36,13 @@ const styles = EStyleSheet.create({
     },
     underTakerName: {
         flex: 1,
-        fontSize: "4rem"
+        fontSize: "4rem",
+        textAlign: "center"
     },
     taskProgress: {
         flex: 1,
-        fontSize: "4rem"
+        fontSize: "4rem",
+        textAlign: "right"
     }
 })
 

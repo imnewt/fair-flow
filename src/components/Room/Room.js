@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useDebugValue } from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
-// import { Recipe } from "../components/Accordion";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import EStyleSheet from 'react-native-extended-stylesheet';
 import firestore from '@react-native-firebase/firestore';

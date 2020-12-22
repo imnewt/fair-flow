@@ -139,7 +139,6 @@ const styles = EStyleSheet.create({
     overlayTitle: {
         fontSize: "6rem",
         fontWeight: "bold",
-        // color: "",
         alignSelf: "center",
         textTransform: "capitalize"
     },
@@ -172,10 +171,10 @@ const styles = EStyleSheet.create({
         padding: "3rem"
     },
     buttonText: {
-        color: "#fff",
+        color: "white",
         fontWeight: "bold",
         textTransform: "uppercase"
-    },
+    }
 })
 
 export default Rooms;
