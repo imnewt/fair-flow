@@ -1,4 +1,4 @@
-import { Dimensions } from "react-native";
+import {Dimensions} from 'react-native';
 
 export default {
   colors: {
@@ -16,22 +16,17 @@ export default {
     txtDisabled: '#C8C9CC',
     backgroundColor: '#F5F6FA',
     modalBackground: '#00000080',
-    transparent: 'transparent'
+    transparent: 'transparent',
   },
   dimensions: {
-    sixteen: 16,
-    // margin: 16,
-    // marginHorizontal: 16,
-    // marginVertical: 16,
-    // paddingHorizontal: 16,
-    // paddingVertical: 16,
+    standardSpacing: 16,
     screenWidth: Dimensions.get('window').width,
     screenHeight: Dimensions.get('window').height,
     borderRadius: 10,
     elevation: 2,
-    elevation10: 10
-  }
-}
+    elevation10: 10,
+  },
+};
 
 /* Hex codes of transparent percentage
 100% — FF
