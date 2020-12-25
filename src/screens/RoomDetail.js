@@ -10,7 +10,7 @@ import {
 import EStyleSheet from 'react-native-extended-stylesheet';
 import firestore from '@react-native-firebase/firestore';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import DropDownPicker from 'react-native-dropdown-picker';
+import {Picker} from '@react-native-picker/picker';
 
 import {Button, Overlay} from 'react-native-elements';
 import {observer, inject} from 'mobx-react';
@@ -29,14 +29,17 @@ const RoomDetail = inject('userStore')(
     const [visible, setVisible] = useState(false);
     const [taskName, setTaskName] = useState('');
     const [description, setDescription] = useState('');
-    const [errTaskName, setErrTaskName] = useState('');
-    const [errDescription, setErrDescription] = useState('');
+    const [handle, setHandle] = useState('');
+    const [errMessage, setErrMessage] = useState('');
+    // const [errDescription, setErrDescription] = useState('');
 
-    const [date, setDate] = useState(new Date(1598051730000));
-    const [mode, setMode] = useState('date');
+    const [date, setDate] = useState(new Date());
+    const [dateText, setDateText] = useState('');
+
     const [show, setShow] = useState(false);
 
     useEffect(() => {
+      setDateText(DateTime.fromJSDate(new Date()).toFormat(DATE_FORMAT));
       const getTasks = firestore()
         .collection('tasks')
         .onSnapshot((querySnapshot) => {
@@ -69,6 +72,7 @@ const RoomDetail = inject('userStore')(
               room.memberIds.includes(member.id),
             );
             setMembers(filteredMembers);
+            filteredMembers.length > 0 && setHandle(filteredMembers[0].id);
           }
         });
       return () => {
@@ -77,34 +81,36 @@ const RoomDetail = inject('userStore')(
       };
     }, []);
 
-    const createTask = async () => {
-      setErrTaskName('');
+    const createTask = () => {
+      setErrMessage('');
       if (!taskName) {
-        setErrTaskName('This field can not be blank!');
+        setErrMessage('This field can not be blank!');
+      } else {
+        console.log('name:', taskName);
+        console.log('descriptiom:', description);
+        console.log('deadline:', dateText);
+        console.log('roomId:', room.id);
+        console.log('underTakerId:', handle);
+        firestore()
+          .collection('tasks')
+          .add({
+            name: taskName,
+            description,
+            progress: 0,
+            deadline: dateText,
+            roomId: room.id,
+            underTakerId: handle,
+          })
+          .then(() => setVisible(false));
       }
-      // else {
-      //     firestore()
-      //     .collection('tasks')
-      //     .add({
-      //         name: taskName,
-      //         description,
-      //         progress: 0,
-      //         deadline: "",
-      //         roomId: room.id,
-      //         underTakerId: ""
-      //     })
-      //     .then(() => setVisible(false))
-      // }
     };
-    const DATE_FORMAT = 'LLLL dd yyyy';
+    const DATE_FORMAT = 'dd/MM/yyyy';
 
-    const onChange = (event, selectedDate) => {
-      console.log('kkkkk event', event);
-      console.log(
-        'kkkkk selectedDate',
-        DateTime.fromJSDate(selectedDate).toFormat(DATE_FORMAT),
-      );
-      // console.log('kkkkk selectedDate', selectedDate.toLocaleString(DateTime.DATE_MED))
+    const handleChangeDate = (event, selectedDate) => {
+      setShow(false);
+      const currentDate = selectedDate || date;
+      setDate(currentDate);
+      setDateText(DateTime.fromJSDate(selectedDate).toFormat(DATE_FORMAT));
     };
 
     return (
@@ -141,7 +147,7 @@ const RoomDetail = inject('userStore')(
         </TouchableOpacity>
         <Overlay
           isVisible={visible}
-          //   onBackdropPress={() => setVisible(false)}
+          onBackdropPress={() => setVisible(false)}
           overlayStyle={{
             width: '90%',
             borderRadius: dimensions.borderRadius,
@@ -165,7 +171,7 @@ const RoomDetail = inject('userStore')(
             />
             <Text style={styles.modalText}>Deadline:</Text>
             <View style={styles.date}>
-              <Text style={styles.dateText}>00/00/0000</Text>
+              <Text style={styles.dateText}>{dateText}</Text>
               <Button
                 title="Pick a date"
                 type="outline"
@@ -175,41 +181,32 @@ const RoomDetail = inject('userStore')(
               />
             </View>
             <Text style={styles.modalText}>Handle:</Text>
-            <DropDownPicker
-              items={[
-                {label: 'USA', value: 'usa'},
-                {label: 'UK', value: 'uk'},
-                {label: 'France', value: 'france'},
-                {label: 'USA', value: 'usa1'},
-                {label: 'UK', value: 'uk'},
-              ]}
-              defaultValue="usa"
-              containerStyle={{height: 40, zIndex: 10}}
-              style={{backgroundColor: '#fafafa'}}
-              itemStyle={{
-                justifyContent: 'flex-start',
-                zIndex: 11,
-              }}
-              dropDownStyle={{backgroundColor: '#fafafa', zIndex: 111}}
-              // onChangeItem={item => this.setState({
-              //     country: item.value
-              // })}
-            />
+            <View style={styles.picker}>
+              <Picker
+                selectedValue={handle}
+                onValueChange={(itemValue, itemIndex) => setHandle(itemValue)}>
+                {members.map((item) => (
+                  <Picker.Item
+                    label={item.displayName}
+                    value={item.id}
+                    key={item.id}
+                  />
+                ))}
+              </Picker>
+            </View>
             {show ? (
               <DateTimePicker
                 testID="dateTimePicker"
                 value={date}
                 mode={'date'}
-                //   minimumDate={}
+                minimumDate={new Date()}
                 //   is24Hour={true}
                 display="default"
-                //   onChange={onChange}
+                onChange={handleChangeDate}
               />
             ) : null}
 
-            {errTaskName ? (
-              <Text style={styles.error}>{errTaskName}</Text>
-            ) : null}
+            {errMessage ? <Text style={styles.error}>{errMessage}</Text> : null}
             <Button
               title="Create"
               titleStyle={styles.overlayButtonText}
@@ -307,6 +304,9 @@ const styles = EStyleSheet.create({
     borderColor: '#2ea7e0',
     paddingVertical: '0.5rem',
     borderRadius: 10,
+  },
+  picker: {
+    backgroundColor: '#eee',
   },
   overlayButton: {
     backgroundColor: '#2ea7e0',
