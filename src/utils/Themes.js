@@ -14,7 +14,7 @@ export default {
     txtPrimary: '#053A66',
     txtSecondary: '#717275',
     txtDisabled: '#C8C9CC',
-    backgroundColor: '#F5F6FA',
+    backgroundColor: '#FBFBFB',
     modalBackground: '#00000080',
     transparent: 'transparent',
   },

@@ -1,19 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {
-  Text,
-  View,
-  ScrollView,
-  TextInput,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native';
+import {Text, View, ScrollView, TouchableOpacity, FlatList} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import firestore from '@react-native-firebase/firestore';
 import {observer, inject} from 'mobx-react';
-import {Overlay, Button} from 'react-native-elements';
+import {Button} from 'react-native-elements';
 import {Room} from '../components/Room';
 import {FormWithOneInput} from '../components/Form';
+
 const Rooms = inject('userStore')(
   observer((props) => {
     const [rooms, setRooms] = useState([]);
@@ -27,15 +21,6 @@ const Rooms = inject('userStore')(
     const [roomShortId, setRoomShortId] = useState('');
     const [errRoomShortId, setErrRoomShortId] = useState('');
     const [visibleJoin, setVisibleJoin] = useState(false);
-
-    // const toggleOverlay = () => {
-    //   setVisibleCreate(false);
-    //   setJoinVisible(false);
-    //   setRoomName('');
-    //   setErrRoomName('');
-    //   setRoomId('');
-    //   setErrRoomId('');
-    // };
 
     const getShortId = () => {
       var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
