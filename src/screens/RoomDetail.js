@@ -20,7 +20,8 @@ import {TaskItemInRoom} from '../components/Room';
 import Header from '../components/Header';
 import Themes from '../utils/Themes';
 const {colors, dimensions} = Themes;
-// import {} from "../utils/Themes"
+const DATE_FORMAT = 'dd/MM/yyyy';
+
 const RoomDetail = inject('userStore')(
   observer((props) => {
     const {room} = props.route.params;
@@ -31,7 +32,6 @@ const RoomDetail = inject('userStore')(
     const [description, setDescription] = useState('');
     const [handle, setHandle] = useState('');
     const [errMessage, setErrMessage] = useState('');
-    // const [errDescription, setErrDescription] = useState('');
 
     const [date, setDate] = useState(new Date());
     const [dateText, setDateText] = useState('');
@@ -50,12 +50,8 @@ const RoomDetail = inject('userStore')(
               id: documentSnapshot.id,
             });
           });
-          if (room.taskIds) {
-            const filteredTasks = tasks.filter((task) =>
-              room.taskIds.includes(task.id),
-            );
-            setTasks(filteredTasks);
-          }
+          const filteredTasks = tasks.filter((task) => task.roomId === room.id);
+          setTasks(filteredTasks);
         });
       const getMembers = firestore()
         .collection('users')
@@ -86,11 +82,6 @@ const RoomDetail = inject('userStore')(
       if (!taskName) {
         setErrMessage('This field can not be blank!');
       } else {
-        console.log('name:', taskName);
-        console.log('descriptiom:', description);
-        console.log('deadline:', dateText);
-        console.log('roomId:', room.id);
-        console.log('underTakerId:', handle);
         firestore()
           .collection('tasks')
           .add({
@@ -104,7 +95,6 @@ const RoomDetail = inject('userStore')(
           .then(() => setVisible(false));
       }
     };
-    const DATE_FORMAT = 'dd/MM/yyyy';
 
     const handleChangeDate = (event, selectedDate) => {
       setShow(false);
@@ -149,7 +139,7 @@ const RoomDetail = inject('userStore')(
           isVisible={visible}
           onBackdropPress={() => setVisible(false)}
           overlayStyle={{
-            width: '90%',
+            width: '92%',
             borderRadius: dimensions.borderRadius,
           }}>
           <View style={styles.overlay}>
@@ -200,7 +190,6 @@ const RoomDetail = inject('userStore')(
                 value={date}
                 mode={'date'}
                 minimumDate={new Date()}
-                //   is24Hour={true}
                 display="default"
                 onChange={handleChangeDate}
               />

@@ -12,22 +12,40 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import firestore from '@react-native-firebase/firestore';
 import {observer, inject} from 'mobx-react';
 import {Overlay, Button} from 'react-native-elements';
-import Header from '../components/Header';
 import {Room} from '../components/Room';
-
+import {FormWithOneInput} from '../components/Form';
 const Rooms = inject('userStore')(
   observer((props) => {
     const [rooms, setRooms] = useState([]);
     const {userStore} = props;
 
+    const [allRooms, setAllRooms] = useState('');
     const [roomName, setRoomName] = useState('');
     const [errRoomName, setErrRoomName] = useState('');
-    const [visible, setVisible] = useState(false);
+    const [visibleCreate, setVisibleCreate] = useState(false);
 
-    const toggleOverlay = () => {
-      setVisible(false);
-      setRoomName('');
-      setErrRoomName('');
+    const [roomShortId, setRoomShortId] = useState('');
+    const [errRoomShortId, setErrRoomShortId] = useState('');
+    const [visibleJoin, setVisibleJoin] = useState(false);
+
+    // const toggleOverlay = () => {
+    //   setVisibleCreate(false);
+    //   setJoinVisible(false);
+    //   setRoomName('');
+    //   setErrRoomName('');
+    //   setRoomId('');
+    //   setErrRoomId('');
+    // };
+
+    const getShortId = () => {
+      var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      var result = '';
+      for (var i = 0; i < 5; i++) {
+        result += randomChars.charAt(
+          Math.floor(Math.random() * randomChars.length),
+        );
+      }
+      return result;
     };
 
     useEffect(() => {
@@ -46,13 +64,14 @@ const Rooms = inject('userStore')(
               room.hostId === userStore.userData.id ||
               room.memberIds.includes(userStore.userData.id),
           );
+          setAllRooms(rooms);
           setRooms(filteredRooms);
         });
       // Unsubscribe from events when no longer in use
       return () => subscriber();
     }, []);
 
-    const createRoom = async () => {
+    const createRoom = () => {
       setErrRoomName('');
       if (!roomName) {
         setErrRoomName('This field can not be blank!');
@@ -61,18 +80,49 @@ const Rooms = inject('userStore')(
           .collection('rooms')
           .add({
             name: roomName,
+            shortId: getShortId(),
             hostId: userStore.userData.id,
             memberIds: [],
           })
-          .then(() => setVisible(false));
+          .then(() => setVisibleCreate(false));
+      }
+    };
+
+    const joinRoom = () => {
+      setErrRoomShortId('');
+      if (!roomShortId) {
+        setErrRoomShortId('This field can not be blank!');
+      } else {
+        const findRoomWithShortId = allRooms.find(
+          (room) => room.shortId === roomShortId,
+        );
+        if (!findRoomWithShortId) {
+          setErrRoomShortId('Room does not exist!');
+        } else {
+          firestore()
+            .collection('rooms')
+            .doc(findRoomWithShortId.id)
+            .update({
+              memberIds: firestore.FieldValue.arrayUnion(userStore.userData.id),
+            })
+            .then(() => setVisibleJoin(false));
+        }
       }
     };
 
     return (
       <View style={styles.container}>
-        {/* <Header title="Rooms"/> */}
         <ScrollView style={{padding: 16}} showsVerticalScrollIndicator={false}>
-          <Text style={styles.title}>Rooms</Text>
+          <View style={styles.header}>
+            <Text style={styles.title}>Rooms</Text>
+            <Button
+              title="Join room"
+              type="outline"
+              titleStyle={styles.joinButtonTitle}
+              buttonStyle={styles.joinButton}
+              onPress={() => setVisibleJoin(true)}
+            />
+          </View>
           <FlatList
             showsVerticalScrollIndicator={false}
             data={rooms}
@@ -85,32 +135,33 @@ const Rooms = inject('userStore')(
         <TouchableOpacity
           style={styles.btn}
           activeOpacity={0.7}
-          onPress={() => setVisible(true)}>
+          onPress={() => setVisibleCreate(true)}>
           <Ionicons name="ios-add" color="white" size={30} />
         </TouchableOpacity>
-        <Overlay
-          isVisible={visible}
-          onBackdropPress={toggleOverlay}
-          overlayStyle={{width: '90%', borderRadius: 10}}>
-          <View style={styles.overlay}>
-            <Text style={styles.overlayTitle}>Create new room</Text>
-            <TextInput
-              style={styles.input}
-              onChangeText={(roomName) => setRoomName(roomName)}
-              value={roomName}
-              placeholder="Enter room name here..."
-            />
-            {errRoomName ? (
-              <Text style={styles.error}>{errRoomName}</Text>
-            ) : null}
-            <Button
-              title="Create"
-              titleStyle={styles.buttonText}
-              buttonStyle={styles.button}
-              onPress={createRoom}
-            />
-          </View>
-        </Overlay>
+        <FormWithOneInput
+          visible={visibleJoin}
+          setVisible={setVisibleJoin}
+          title="Join room"
+          text={roomShortId}
+          setText={setRoomShortId}
+          placeholder="Enter room short id here..."
+          errMessage={errRoomShortId}
+          setErrMessage={setErrRoomShortId}
+          buttonTitle="Join"
+          handleOnPress={joinRoom}
+        />
+        <FormWithOneInput
+          visible={visibleCreate}
+          setVisible={setVisibleCreate}
+          title="Create new room"
+          text={roomName}
+          setText={setRoomName}
+          placeholder="Enter room name here..."
+          errMessage={errRoomName}
+          setErrMessage={setErrRoomName}
+          buttonTitle="Create"
+          handleOnPress={createRoom}
+        />
       </View>
     );
   }),
@@ -121,10 +172,25 @@ const styles = EStyleSheet.create({
     flex: 1,
     backgroundColor: '#F2F1ED',
   },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   title: {
     fontSize: '8rem',
     fontWeight: 'bold',
     color: '#C2C1BF',
+  },
+  joinButtonTitle: {
+    fontSize: '3.5rem',
+  },
+  joinButton: {
+    marginLeft: '3rem',
+    borderWidth: '0.3rem',
+    borderColor: '#2ea7e0',
+    paddingVertical: '0.5rem',
+    borderRadius: 10,
   },
   btn: {
     position: 'absolute',
@@ -138,49 +204,6 @@ const styles = EStyleSheet.create({
     right: '5rem',
     opacity: 0.8,
     elevation: 5,
-  },
-  overlay: {
-    backgroundColor: '#fff',
-    margin: '2rem',
-  },
-  overlayTitle: {
-    fontSize: '6rem',
-    fontWeight: 'bold',
-    alignSelf: 'center',
-    textTransform: 'capitalize',
-  },
-  input: {
-    backgroundColor: '#eee',
-    marginTop: '3rem',
-    height: '12rem',
-    width: '100%',
-    padding: '2rem',
-    borderRadius: 5,
-    shadowColor: '#000',
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    shadowOffset: {width: 0, height: 0},
-    elevation: 1,
-    fontSize: '4rem',
-  },
-  error: {
-    color: 'red',
-    fontWeight: 'bold',
-    alignSelf: 'center',
-    marginTop: '4rem',
-  },
-  button: {
-    backgroundColor: '#2ea7e0',
-    marginTop: '4rem',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 5,
-    padding: '3rem',
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
   },
 });
 
