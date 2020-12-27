@@ -1,7 +1,9 @@
 import React from 'react';
 import {Text, View, TextInput} from 'react-native';
-import {Overlay, Button} from 'react-native-elements';
+import {Overlay} from 'react-native-elements';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import {ButtonStandard} from '../CustomCoreComponents';
+
 const FormWithOneInput = ({
   visible,
   setVisible,
@@ -33,16 +35,12 @@ const FormWithOneInput = ({
           placeholder={placeholder}
         />
         {errMessage ? <Text style={styles.error}>{errMessage}</Text> : null}
-        <Button
-          title={buttonTitle}
-          titleStyle={styles.buttonTitle}
-          buttonStyle={styles.button}
-          onPress={handleOnPress}
-        />
+        <ButtonStandard title={buttonTitle} onButtonPress={handleOnPress} />
       </View>
     </Overlay>
   );
 };
+
 const styles = EStyleSheet.create({
   overlay: {
     backgroundColor: '#fff',
@@ -73,19 +71,6 @@ const styles = EStyleSheet.create({
     fontWeight: 'bold',
     alignSelf: 'center',
     marginTop: '4rem',
-  },
-  button: {
-    backgroundColor: '#2ea7e0',
-    marginTop: '4rem',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 5,
-    padding: '3rem',
-  },
-  buttonTitle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
   },
 });
 

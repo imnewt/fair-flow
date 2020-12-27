@@ -1,7 +1,7 @@
 import React from 'react';
 import {LogBox} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import LoginScreen from './src/screens/Login';
@@ -17,6 +17,8 @@ import {Provider} from 'mobx-react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {Dimensions} from 'react-native';
+import Themes from './src/utils/Themes';
+const {colors} = Themes;
 
 const entireScreenWidth = Dimensions.get('window').width;
 EStyleSheet.build({$rem: entireScreenWidth / 100});
@@ -41,10 +43,9 @@ const Main = () => {
         },
       })}
       tabBarOptions={{
-        activeTintColor: '#2ea7e0',
-        inactiveTintColor: '#8D8E91',
+        activeTintColor: colors.primary,
+        inactiveTintColor: colors.tabInactiveColor,
         style: {
-          // backgroundColor: "#383838",
           height: 60,
           paddingBottom: 3,
         },
@@ -68,32 +69,12 @@ export default function App() {
         <RootStack.Navigator
           initialRouteName="Main"
           screenOptions={{
-            headerTitle: null,
-            headerTransparent: true,
-            headerTintColor: '#36413E',
-            headerTitleAlign: 'center',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-              fontSize: 19,
-              color: '#FFF',
-            },
-            headerBackImage: () => <Ionicons name="ios-arrow-back" size={25} />,
+            headerShown: false,
+            ...TransitionPresets.SlideFromRightIOS,
           }}>
-          <RootStack.Screen
-            name="Login"
-            component={LoginScreen}
-            options={{headerShown: false}}
-          />
-          <RootStack.Screen
-            name="Register"
-            component={RegisterScreen}
-            options={{headerShown: false}}
-          />
-          <RootStack.Screen
-            name="Main"
-            component={Main}
-            options={{headerShown: false}}
-          />
+          <RootStack.Screen name="Login" component={LoginScreen} />
+          <RootStack.Screen name="Register" component={RegisterScreen} />
+          <RootStack.Screen name="Main" component={Main} />
         </RootStack.Navigator>
       </NavigationContainer>
     </Provider>

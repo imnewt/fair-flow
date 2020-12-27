@@ -1,9 +1,10 @@
 import {makeObservable, observable, computed, action} from 'mobx';
 
 class UserStore {
-  // userData = null
+  // userData = null;
   userData = {
     // id: "Xuo2nGKAnMRbNLEL6IYp" // admin
+    displayName: 'truc dep trai huhir',
     id: 'hB5scY9aQldEof0MxAnx', // truc
   };
 

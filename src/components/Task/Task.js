@@ -1,16 +1,19 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View, TouchableWithoutFeedback} from 'react-native';
+import {Text, View, TouchableWithoutFeedback, Dimensions} from 'react-native';
 import Animated, {Easing} from 'react-native-reanimated';
 import {mix, bin, useTransition} from 'react-native-redash';
-import Chevron from './Chevron';
-import TaskExpand, {LIST_ITEM_HEIGHT} from './TaskExpand';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import firestore from '@react-native-firebase/firestore';
-
+import Chevron from './Chevron';
+import TaskExpand from './TaskExpand';
+import Themes from '../../utils/Themes';
+const {dimensions} = Themes;
 const {not, interpolate} = Animated;
 
 const Task = ({task}) => {
   const [open, setOpen] = useState(false);
+  const [roomName, setRoomName] = useState('');
+
   const transition = useTransition(
     open,
     not(bin(open)),
@@ -18,22 +21,22 @@ const Task = ({task}) => {
     400,
     Easing.inOut(Easing.ease),
   );
-
-  const height = mix(transition, 0, LIST_ITEM_HEIGHT);
+  const height = mix(
+    transition,
+    0,
+    (Dimensions.get('window').width / 100) * 65,
+  );
 
   const bottomRadius = interpolate(transition, {
     inputRange: [0, 16 / 400],
     outputRange: [8, 0],
   });
 
-  const [roomName, setRoomName] = useState('');
-
   useEffect(() => {
     const subscriber = firestore()
       .collection('rooms')
       .doc(task.roomId)
       .onSnapshot((querySnapshot) => setRoomName(querySnapshot.data().name));
-    // Unsubscribe from events when no longer in use
     return () => subscriber();
   }, []);
 
@@ -48,7 +51,7 @@ const Task = ({task}) => {
               borderBottomRightRadius: bottomRadius,
             },
           ]}>
-          <View style={styles.line}>
+          <View style={styles.taskName}>
             <Text style={styles.name}>{task.name}</Text>
             <Chevron {...{transition}} />
           </View>
@@ -56,7 +59,7 @@ const Task = ({task}) => {
           <Text style={styles.info}>{task.deadline}</Text>
         </Animated.View>
       </TouchableWithoutFeedback>
-      <Animated.View style={[styles.items, {height}]}>
+      <Animated.View style={[styles.expand, {height}]}>
         <TaskExpand
           description={task.description}
           progress={task.progress}
@@ -70,12 +73,21 @@ const Task = ({task}) => {
 const styles = EStyleSheet.create({
   container: {
     marginTop: '4rem',
-    backgroundColor: '#fff',
-    padding: 16,
+    marginHorizontal: '0.5rem',
+    backgroundColor: 'white',
+    padding: dimensions.standardSpacing,
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.12,
+    shadowRadius: 60,
+    elevation: 2,
   },
-  line: {
+  taskName: {
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -90,9 +102,9 @@ const styles = EStyleSheet.create({
   info: {
     fontSize: '4rem',
     marginTop: '1rem',
-    color: '#000',
+    color: 'black',
   },
-  items: {
+  expand: {
     overflow: 'hidden',
   },
 });

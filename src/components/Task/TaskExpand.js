@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import {Text, View, Dimensions, TextInput} from 'react-native';
+import {Text, View, TextInput} from 'react-native';
 import ProgressCircle from 'react-native-progress-circle';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import {Button, Divider, Overlay} from 'react-native-elements';
+import {Button, Overlay} from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
-
-export const LIST_ITEM_HEIGHT = (Dimensions.get('window').width / 100) * 61.5;
+import Themes from '../../utils/Themes';
+const {colors, dimensions} = Themes;
 
 const TaskExpand = ({description, progress, id}) => {
   const [visible, setVisible] = useState(false);
@@ -43,21 +43,20 @@ const TaskExpand = ({description, progress, id}) => {
 
   return (
     <View style={styles.container}>
-      <Divider style={styles.divider} />
       <View style={styles.content}>
         <Text style={styles.title}>Description</Text>
         <Text style={styles.description} numberOfLines={1}>
           {description}
         </Text>
-        <View style={styles.progress}>
+        <View style={styles.progressBlock}>
           <ProgressCircle
             percent={progress}
             radius={40}
             borderWidth={8}
-            color="#2ea7e0"
-            shadowColor="#C2C1BF"
-            bgColor="#fff">
-            <Text style={{fontSize: 18}}>{progress}%</Text>
+            color={colors.primary}
+            shadowColor={colors.secondary}
+            bgColor="white">
+            <Text style={styles.progress}>{progress}%</Text>
           </ProgressCircle>
         </View>
         <Button
@@ -70,11 +69,10 @@ const TaskExpand = ({description, progress, id}) => {
       <Overlay
         isVisible={visible}
         onBackdropPress={toggleOverlay}
-        overlayStyle={{width: '90%', borderRadius: 10, marginHorizontal: 20}}>
+        overlayStyle={{width: '90%', borderRadius: 10}}>
         <View style={styles.overlay}>
           <Text style={styles.title}>Description</Text>
           <Text style={styles.description}>{description}</Text>
-          {/* <Text style={styles.title}>Progress</Text> */}
           <TextInput
             style={styles.input}
             keyboardType="number-pad"
@@ -102,20 +100,18 @@ const TaskExpand = ({description, progress, id}) => {
 const styles = EStyleSheet.create({
   container: {
     backgroundColor: 'white',
-    paddingHorizontal: 16,
-    borderColor: '#F4F4F6',
+    padding: dimensions.standardSpacing,
+    marginHorizontal: '0.5rem',
     borderBottomLeftRadius: 8,
     borderBottomRightRadius: 8,
-    height: LIST_ITEM_HEIGHT,
-    shadowColor: '#000',
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    shadowOffset: {width: 0, height: 0},
-    elevation: 1,
-  },
-  divider: {
-    height: 1,
-    marginBottom: '3rem',
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.12,
+    shadowRadius: 60,
+    elevation: 2,
   },
   title: {
     fontSize: '4rem',
@@ -125,9 +121,12 @@ const styles = EStyleSheet.create({
     marginVertical: '1rem',
     fontSize: '5rem',
   },
-  progress: {
+  progressBlock: {
     alignItems: 'center',
     marginTop: '4rem',
+  },
+  progress: {
+    fontSize: '4.5rem',
   },
   input: {
     backgroundColor: '#eee',
@@ -144,13 +143,13 @@ const styles = EStyleSheet.create({
     fontSize: '4rem',
   },
   error: {
-    color: 'red',
+    color: colors.error,
     fontWeight: 'bold',
     alignSelf: 'center',
     marginTop: '4rem',
   },
   button: {
-    backgroundColor: '#2ea7e0',
+    backgroundColor: colors.primary,
     marginTop: '4rem',
     justifyContent: 'center',
     alignItems: 'center',
@@ -158,18 +157,12 @@ const styles = EStyleSheet.create({
     padding: '3rem',
   },
   buttonText: {
-    color: '#fff',
     fontWeight: 'bold',
     textTransform: 'uppercase',
   },
   overlay: {
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     margin: '3rem',
-  },
-  modalText: {
-    paddingTop: '3rem',
-    fontSize: '5rem',
-    fontWeight: '900',
   },
 });
 
