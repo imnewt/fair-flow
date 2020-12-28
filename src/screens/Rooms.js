@@ -93,12 +93,12 @@ const Rooms = inject('userStore')(
     };
 
     return (
-      <BaseContainer stickyButton setVisible={setVisibleCreate}>
-        <TabTitle
-          title="rooms"
-          buttonTitle="Join room"
-          buttonPress={() => setVisibleJoin(true)}
-        />
+      <BaseContainer
+        stickyButton
+        tabTitle="rooms"
+        buttonTitle="Join room"
+        buttonPress={() => setVisibleJoin(true)}
+        setVisible={setVisibleCreate}>
         <FlatList
           showsVerticalScrollIndicator={false}
           data={rooms}

@@ -3,10 +3,10 @@ import {observer, inject} from 'mobx-react';
 import {useNavigation} from '@react-navigation/native';
 import {
   BaseContainer,
-  TabTitle,
   ButtonStandard,
 } from '../components/CustomCoreComponents';
 import {UserBadge, SettingOption} from '../components/Settings';
+import {useDidMountEffect} from '../utils/CustomHooks';
 
 const Settings = inject('userStore')(
   observer((props) => {
@@ -18,14 +18,17 @@ const Settings = inject('userStore')(
       setUser(userStore.userData);
     }, []);
 
+    // useDidMountEffect(() => {
+    //   setUser(userStore.userData);
+    // }, []);
+
     const handleLogout = () => {
       navigation.navigate('Login');
       userStore.wipeData();
     };
 
     return (
-      <BaseContainer>
-        <TabTitle title="settings" />
+      <BaseContainer tabTitle="settings">
         <UserBadge userName={user.displayName} />
         <SettingOption
           iconName="ios-person"

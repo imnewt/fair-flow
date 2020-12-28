@@ -1,12 +1,13 @@
 import {makeObservable, observable, computed, action} from 'mobx';
 
 class UserStore {
-  // userData = null;
-  userData = {
-    // id: "Xuo2nGKAnMRbNLEL6IYp" // admin
-    displayName: 'truc dep trai huhir',
-    id: 'hB5scY9aQldEof0MxAnx', // truc
-  };
+  userData = null;
+  // userData = {
+  //   // id: "Xuo2nGKAnMRbNLEL6IYp" // admin
+  //   email: 'truc@gmail.com',
+  //   displayName: 'truc',
+  //   id: 'hB5scY9aQldEof0MxAnx', // truc
+  // };
 
   // @observable name = 'Khanh Duong' //#2
   // @observable age = 15 //#2
@@ -16,6 +17,7 @@ class UserStore {
       userData: observable,
       // isAdult: computed,
       saveUserData: action,
+      updateUserData: action,
       wipeData: action,
     });
     // makeObservable(this) //#2
@@ -29,6 +31,12 @@ class UserStore {
   // @action //#2
   saveUserData(user) {
     this.userData = user;
+  }
+
+  updateUserData(name, phone, address) {
+    this.userData.displayName = name;
+    this.userData.phoneNumber = phone;
+    this.userData.address = address;
   }
 
   wipeData() {

@@ -92,7 +92,7 @@ const Login = inject('userStore')(
         <Alert
           visible={visible}
           toggleOverlay={toggleOverlay}
-          content="Login Success!"
+          content="login success"
         />
       </BaseContainer>
     );

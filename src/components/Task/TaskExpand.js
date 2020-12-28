@@ -26,7 +26,6 @@ const TaskExpand = ({description, progress, id}) => {
     ) {
       setErr(true);
     } else {
-      console.log(id);
       firestore()
         .collection('tasks')
         .doc(id)

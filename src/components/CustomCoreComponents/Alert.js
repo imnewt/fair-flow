@@ -3,6 +3,8 @@ import {Text, View} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {Overlay} from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Themes from '../../utils/Themes';
+const {dimensions} = Themes;
 
 const Alert = ({visible, toggleOverlay, content}) => {
   return (
@@ -13,10 +15,10 @@ const Alert = ({visible, toggleOverlay, content}) => {
       <View style={styles.container}>
         <Ionicons
           name="ios-checkmark-circle-outline"
-          size={80}
+          size={dimensions.alertIconSize}
           color="#109648"
         />
-        <Text style={styles.text}>{content}</Text>
+        <Text style={styles.text}>{content}!</Text>
       </View>
     </Overlay>
   );
@@ -31,9 +33,9 @@ const styles = EStyleSheet.create({
     borderRadius: 120,
   },
   text: {
-    paddingTop: '3rem',
+    paddingTop: '5rem',
     fontSize: '5rem',
-    fontWeight: '900',
+    textTransform: 'capitalize',
   },
 });
 

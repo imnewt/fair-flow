@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import firestore from '@react-native-firebase/firestore';
-import {FlatList} from 'react-native';
+import {FlatList, Text} from 'react-native';
 import {observer, inject} from 'mobx-react';
 import {BaseContainer, TabTitle} from '../components/CustomCoreComponents';
 import {Task} from '../components/Task';
@@ -33,8 +33,7 @@ const Tasks = inject('userStore')(
     }, []);
 
     return (
-      <BaseContainer>
-        <TabTitle title="Tasks" />
+      <BaseContainer tabTitle="Tasks">
         <FlatList
           showsVerticalScrollIndicator={false}
           data={tasks}

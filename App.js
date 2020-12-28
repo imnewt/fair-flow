@@ -68,7 +68,7 @@ export default function App() {
     <Provider {...stores}>
       <NavigationContainer>
         <RootStack.Navigator
-          initialRouteName="Main"
+          initialRouteName="Login"
           screenOptions={{
             headerShown: false,
             ...TransitionPresets.SlideFromRightIOS,

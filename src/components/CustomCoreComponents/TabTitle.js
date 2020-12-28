@@ -8,7 +8,7 @@ const {colors, dimensions} = Themes;
 const TabTitle = ({title, buttonTitle, buttonPress}) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.title}>{title} </Text>
       {buttonTitle ? (
         <Button
           title={buttonTitle}
@@ -33,6 +33,8 @@ const styles = EStyleSheet.create({
     fontSize: '8rem',
     fontWeight: 'bold',
     textTransform: 'capitalize',
+    borderBottomWidth: '1rem',
+    borderBottomColor: colors.primary,
     color: colors.secondary,
   },
   buttonTitle: {
