@@ -29,28 +29,33 @@ const Settings = inject('userStore')(
         <UserBadge userName={user.displayName} />
         <SettingOption
           iconName="ios-person"
-          iconBackground="#ffd54d"
+          iconBackground="#FFD54D"
           title="edit profile"
+          routeName="Profile"
         />
         <SettingOption
           iconName="lock-closed"
-          iconBackground="#4fc3f7"
+          iconBackground="#4FC3F7"
           title="change password"
+          routeName="Password"
         />
         <SettingOption
           iconName="shield"
-          iconBackground="#dce775"
+          iconBackground="#DCE775"
           title="privacy policy"
+          routeName="Policy"
         />
         <SettingOption
           iconName="shapes"
-          iconBackground="#ff8b65"
+          iconBackground="#FF8B65"
           title="support"
+          routeName="Support"
         />
         <SettingOption
           iconName="business"
-          iconBackground="#7986cb"
+          iconBackground="#7986CB"
           title="about us"
+          routeName="About"
         />
         <ButtonStandard title="log out" onButtonPress={handleLogout} />
       </BaseContainer>

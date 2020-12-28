@@ -21,7 +21,12 @@ export default {
   },
   dimensions: {
     standardSpacing: 16,
+    chevronIconSize: (Dimensions.get('window').width / 100) * 5,
     iconSize: (Dimensions.get('window').width / 100) * 6,
+    tabIconSize: (Dimensions.get('window').width / 100) * 6.5,
+    tabHeight: (Dimensions.get('window').width / 100) * 15,
+    tabPadding: (Dimensions.get('window').width / 100) * 1,
+    tabTitleSize: (Dimensions.get('window').width / 100) * 3,
     screenWidth: Dimensions.get('window').width,
     screenHeight: Dimensions.get('window').height,
     borderRadius: 10,
