@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
+import Loading from './Loading';
 import {
   BaseContainer,
   Logo,
-  Alert,
   InputWithIcon,
   ButtonGroup,
 } from '../components/CustomCoreComponents';
@@ -17,17 +18,9 @@ const Register = () => {
   const [errEmail, setErrEmail] = useState('');
   const [errName, setErrName] = useState('');
   const [errPass, setErrPass] = useState('');
-  const [visible, setVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const toggleOverlay = () => {
-    navigation.navigate('Login');
-    setVisible(false);
-    setEmail('');
-    setDisplayName('');
-    setPassword('');
-  };
-
-  const createUser = async () => {
+  const createUser = () => {
     setErrEmail('');
     setErrName('');
     setErrPass('');
@@ -42,34 +35,32 @@ const Register = () => {
     if (!password) {
       setErrPass('This field can not be blank!');
     } else {
-      const subcriber = await firestore()
-        .collection('users')
-        .onSnapshot((querySnapshot) => {
-          const users = [];
-
-          querySnapshot.forEach((documentSnapshot) => {
-            users.push({
-              ...documentSnapshot.data(),
-              key: documentSnapshot.id,
+      setIsLoading(true);
+      auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          firestore()
+            .collection('users')
+            .add({
+              email: email,
+              displayName: displayName,
+              password: password,
+            })
+            .then(() => {
+              navigation.navigate('Login');
+              setIsLoading(false);
+              setErrEmail('');
+              setErrName('');
+              setErrPass('');
             });
-          });
-          const findUser = users.find((user) => user.email === email);
-          if (findUser) {
-            setErrEmail('Email has been used for another account!');
-          } else {
-            firestore()
-              .collection('users')
-              .add({
-                email: email,
-                displayName: displayName,
-                password: password,
-              })
-              .then(() => {
-                setVisible(true);
-                setErrEmail('');
-                setErrName('');
-                setErrPass('');
-              });
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          if (error.code === 'auth/email-already-in-use') {
+            setErrEmail('That email address is already in use!');
+          }
+          if (error.code === 'auth/weak-password') {
+            setErrPass('Weak password!');
           }
         });
     }
@@ -106,11 +97,7 @@ const Register = () => {
         buttonPress1={createUser}
         buttonPress2={() => navigation.navigate('Login')}
       />
-      <Alert
-        visible={visible}
-        toggleOverlay={toggleOverlay}
-        content="User Created!"
-      />
+      <Loading isVisible={isLoading} />
     </BaseContainer>
   );
 };

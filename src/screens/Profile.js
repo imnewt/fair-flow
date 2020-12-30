@@ -9,6 +9,7 @@ import {
   Alert,
   ErrorMessage,
 } from '../components/CustomCoreComponents';
+import Loading from './Loading';
 
 const Profile = inject('userStore')(
   observer(({userStore}) => {
@@ -18,7 +19,8 @@ const Profile = inject('userStore')(
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
     const [errMessage, setErrMessage] = useState('');
-    const [visible, setVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [visibleProfile, setVisibleProfile] = useState(false);
 
     useEffect(() => {
       const {userData} = userStore;
@@ -30,13 +32,16 @@ const Profile = inject('userStore')(
     }, []);
 
     const updateProfile = () => {
+      setIsLoading(true);
       const {userData} = userStore;
       if (!name || !phone || !address) {
         setErrMessage('Fields can not be blank!');
+        setIsLoading(false);
         return;
       }
       if (phone.length !== 10) {
         setErrMessage('Phone number must have 10 digits!');
+        setIsLoading(false);
         return;
       }
       firestore()
@@ -48,15 +53,16 @@ const Profile = inject('userStore')(
           address: address,
         })
         .then(() => {
-          userStore.updateUserData(name, phone, address);
-          setVisible(true);
+          setIsLoading(false);
+          setVisibleProfile(true);
           setErrMessage('');
+          userStore.updateUserData(name, phone, address);
         });
     };
 
     const toggleOverlay = () => {
-      navigation.navigate('Settings');
-      setVisible(false);
+      setVisibleProfile(false);
+      navigation.navigate('Settings', {updated: true});
     };
 
     return (
@@ -72,10 +78,11 @@ const Profile = inject('userStore')(
         <InputStandard label="address" text={address} setText={setAddress} />
         <ErrorMessage message={errMessage} />
         <ButtonStandard title="save" onButtonPress={updateProfile} />
+        <Loading isVisible={isLoading} />
         <Alert
-          visible={visible}
+          visible={visibleProfile}
           toggleOverlay={toggleOverlay}
-          content="profile updated"
+          content="Your profile has been updated"
         />
       </BaseContainer>
     );

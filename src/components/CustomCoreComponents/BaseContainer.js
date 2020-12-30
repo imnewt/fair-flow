@@ -1,12 +1,14 @@
 import React from 'react';
 import {View, ScrollView, StyleSheet} from 'react-native';
 import {TabTitle, ButtonAdd} from '../../components/CustomCoreComponents';
+import Loading from '../../screens/Loading';
 import Themes from '../../utils/Themes';
 const {colors, dimensions} = Themes;
 
 const BaseContainer = ({
   children,
   isCenter,
+  isLoading,
   tabTitle,
   buttonTitle,
   buttonPress,
@@ -15,13 +17,13 @@ const BaseContainer = ({
 }) => {
   return (
     <View style={styles.container}>
-      {tabTitle ? (
+      {tabTitle && (
         <TabTitle
           title={tabTitle}
           buttonTitle={buttonTitle}
           buttonPress={buttonPress}
         />
-      ) : null}
+      )}
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={
@@ -32,6 +34,7 @@ const BaseContainer = ({
         }>
         {children}
       </ScrollView>
+      {isLoading ? <Loading /> : null}
       {stickyButton ? <ButtonAdd setVisible={setVisible} /> : null}
     </View>
   );
@@ -40,6 +43,7 @@ const BaseContainer = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    position: 'relative',
     backgroundColor: colors.backgroundColor,
     paddingHorizontal: dimensions.standardSpacing,
   },

@@ -9,18 +9,19 @@ import {UserBadge, SettingOption} from '../components/Settings';
 import {useDidMountEffect} from '../utils/CustomHooks';
 
 const Settings = inject('userStore')(
-  observer((props) => {
+  observer(({userStore, route}) => {
     const navigation = useNavigation();
     const [user, setUser] = useState({});
-    const {userStore} = props;
 
     useEffect(() => {
       setUser(userStore.userData);
     }, []);
 
-    // useDidMountEffect(() => {
-    //   setUser(userStore.userData);
-    // }, []);
+    useDidMountEffect(() => {
+      const {updated} = route.params;
+      updated && setUser(userStore.userData);
+      // console.log(userStore.userData);
+    }, [route]);
 
     const handleLogout = () => {
       navigation.navigate('Login');

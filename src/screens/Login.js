@@ -1,33 +1,43 @@
 import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 import {observer, inject} from 'mobx-react';
 import {
   BaseContainer,
   Logo,
-  Alert,
   InputWithIcon,
   ButtonGroup,
+  Alert,
 } from '../components/CustomCoreComponents';
+import Loading from './Loading';
 
 const Login = inject('userStore')(
-  observer((props) => {
+  observer(({userStore}) => {
     const navigation = useNavigation();
-    const {userStore} = props;
+    const [users, setUsers] = useState([]);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errEmail, setErrEmail] = useState('');
     const [errPass, setErrPass] = useState('');
-    const [visible, setVisible] = useState(false);
+    const [visibleLogin, setVisibleLogin] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(() => {});
-
-    const toggleOverlay = () => {
-      navigation.navigate('Main');
-      setVisible(false);
-      setEmail('');
-      setPassword('');
-    };
+    useEffect(() => {
+      const subcriber = firestore()
+        .collection('users')
+        .onSnapshot((querySnapshot) => {
+          const users = [];
+          querySnapshot.forEach((documentSnapshot) => {
+            users.push({
+              ...documentSnapshot.data(),
+              id: documentSnapshot.id,
+            });
+          });
+          setUsers(users);
+        });
+      return () => subcriber();
+    }, []);
 
     const handleLogin = async () => {
       setErrEmail('');
@@ -40,29 +50,33 @@ const Login = inject('userStore')(
       if (!password) {
         setErrPass('This field can not be blank!');
       } else {
-        const subcriber = await firestore()
-          .collection('users')
-          .onSnapshot((querySnapshot) => {
-            const users = [];
-            querySnapshot.forEach((documentSnapshot) => {
-              users.push({
-                ...documentSnapshot.data(),
-                id: documentSnapshot.id,
-              });
-            });
-            const findUser = users.find((user) => user.email === email);
-            if (findUser) {
-              if (password === findUser.password) {
-                setVisible(true);
-                userStore.saveUserData(findUser);
-              } else {
-                setErrPass('Wrong password!');
-              }
-            } else {
+        setIsLoading(true);
+        auth()
+          .signInWithEmailAndPassword(email, password)
+          .then(() => {
+            // setVisibleLogin(true);
+            navigation.navigate('Main');
+            const user = users.find((user) => user.email === email);
+            userStore.saveUserData(user);
+            setIsLoading(false);
+            setErrEmail('');
+            setErrPass('');
+          })
+          .catch((error) => {
+            setIsLoading(false);
+            if (error.code === 'auth/user-not-found') {
               setErrEmail('User not found!');
+            }
+            if (error.code === 'auth/wrong-password') {
+              setErrPass('Wrong password!');
             }
           });
       }
+    };
+
+    const toggleOverlay = () => {
+      setVisibleLogin(false);
+      navigation.navigate('Main');
     };
 
     return (
@@ -89,11 +103,12 @@ const Login = inject('userStore')(
           buttonPress1={handleLogin}
           buttonPress2={() => navigation.navigate('Register')}
         />
-        <Alert
-          visible={visible}
+        <Loading isVisible={isLoading} />
+        {/* <Alert
+          isVisible={visibleLogin}
           toggleOverlay={toggleOverlay}
-          content="login success"
-        />
+          content="You successfully log in to Fair Flow"
+        /> */}
       </BaseContainer>
     );
   }),

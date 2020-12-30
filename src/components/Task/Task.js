@@ -97,7 +97,7 @@ const styles = EStyleSheet.create({
     fontSize: '5.5rem',
     fontWeight: 'bold',
     textTransform: 'capitalize',
-    width: '90%',
+    flexShrink: 1,
   },
   info: {
     fontSize: '4rem',
