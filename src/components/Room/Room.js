@@ -1,14 +1,15 @@
-import React, {useState, useEffect, useDebugValue} from 'react';
-import {StyleSheet, Text, View, ScrollView} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {Text, View} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import firestore from '@react-native-firebase/firestore';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
+import Themes from '../../utils/Themes';
+const {dimensions} = Themes;
 
 const Room = ({room, index}) => {
   const navigation = useNavigation();
   const [hostName, setHostName] = useState([]);
-
   const isOdd = index % 2 == 0 ? true : false;
 
   useEffect(() => {
@@ -47,7 +48,7 @@ const styles = EStyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     marginVertical: '2rem',
-    borderRadius: 10,
+    borderRadius: dimensions.borderRadius,
     shadowColor: 'black',
     shadowOffset: {
       width: 0,
@@ -55,7 +56,7 @@ const styles = EStyleSheet.create({
     },
     shadowOpacity: 0.12,
     shadowRadius: 60,
-    elevation: 2,
+    elevation: dimensions.elevation,
   },
   button: {
     padding: '4rem',
@@ -68,7 +69,6 @@ const styles = EStyleSheet.create({
     marginTop: '1.5rem',
     fontSize: '4rem',
   },
-  members: {},
 });
 
 export default Room;

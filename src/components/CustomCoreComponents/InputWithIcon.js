@@ -2,6 +2,8 @@ import React from 'react';
 import {Input} from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import Themes from '../../utils/Themes';
+const {colors, dimensions} = Themes;
 
 const InputWithIcon = ({
   placeholder,
@@ -14,9 +16,15 @@ const InputWithIcon = ({
   return (
     <Input
       placeholder={placeholder}
-      placeholderTextColor="#3F4350"
+      placeholderTextColor={colors.inputTextColor}
       secureTextEntry={isPassword ? true : false}
-      leftIcon={<Ionicons name={iconName} size={25} color="#3F4350" />}
+      leftIcon={
+        <Ionicons
+          name={iconName}
+          size={dimensions.iconSize}
+          color={colors.inputTextColor}
+        />
+      }
       inputStyle={styles.input}
       onChangeText={(text) => setText(text)}
       value={text}

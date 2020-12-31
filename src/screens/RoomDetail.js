@@ -6,6 +6,8 @@ import {observer, inject} from 'mobx-react';
 import {BaseContainer} from '../components/CustomCoreComponents';
 import {TaskItemInRoom} from '../components/Room';
 import {FormCreateTask} from '../components/Form';
+import Themes from '../utils/Themes';
+const {dimensions} = Themes;
 
 const RoomDetail = inject('userStore')(
   observer(({userStore, route}) => {
@@ -81,6 +83,7 @@ const RoomDetail = inject('userStore')(
             <Text style={styles.text}>{item.displayName}</Text>
           )}
           keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.memberList}
         />
         <FormCreateTask
           visible={visible}
@@ -96,12 +99,17 @@ const RoomDetail = inject('userStore')(
 const styles = EStyleSheet.create({
   title: {
     marginTop: '4rem',
+    marginLeft: '2rem',
     fontSize: '5.5rem',
     fontWeight: 'bold',
     fontStyle: 'italic',
   },
+  memberList: {
+    marginBottom: dimensions.standardSpacing,
+  },
   text: {
     marginBottom: '1rem',
+    marginLeft: '2rem',
     fontSize: '4rem',
   },
 });

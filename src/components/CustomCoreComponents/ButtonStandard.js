@@ -2,7 +2,7 @@ import React from 'react';
 import {Button} from 'react-native-elements';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Themes from '../../utils/Themes';
-const {colors} = Themes;
+const {colors, dimensions} = Themes;
 
 const ButtonStandard = ({title, onButtonPress}) => (
   <Button
@@ -19,7 +19,7 @@ const styles = EStyleSheet.create({
     marginTop: '4rem',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 5,
+    borderRadius: dimensions.borderRadius,
     padding: '3rem',
   },
   title: {

@@ -7,7 +7,7 @@ const {colors} = Themes;
 const ErrorMessage = ({message}) => {
   return (
     <View style={styles.container}>
-      {message ? <Text style={styles.text}>{message}</Text> : null}
+      <Text style={styles.text}>{message}</Text>
     </View>
   );
 };

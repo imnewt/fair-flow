@@ -6,6 +6,7 @@ export default {
     secondary: '#C2C1BF',
     tabInactiveColor: '#8D8E91',
     error: '#DB3A34',
+    inputTextColor: '#3F4350',
     inputBackground: '#EEEEEE',
     alertBackground: '#3FC59D',
     alertButton: '#E2747E',
@@ -25,7 +26,10 @@ export default {
     screenHeight: Dimensions.get('window').height,
     borderRadius: 10,
     elevation: 2,
-    elevation10: 10,
+    elevation8: 8,
+  },
+  datetime: {
+    DATE_FORMAT: 'dd/MM/yyyy',
   },
 };
 

@@ -43,7 +43,7 @@ const styles = EStyleSheet.create({
   button: {
     marginLeft: '3rem',
     borderWidth: '0.3rem',
-    borderColor: '#2ea7e0',
+    borderColor: colors.primary,
     paddingVertical: '0.5rem',
     borderRadius: 10,
   },

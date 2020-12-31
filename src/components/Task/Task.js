@@ -21,6 +21,7 @@ const Task = ({task}) => {
     400,
     Easing.inOut(Easing.ease),
   );
+
   const height = mix(
     transition,
     0,
@@ -76,8 +77,8 @@ const styles = EStyleSheet.create({
     marginHorizontal: '0.5rem',
     backgroundColor: 'white',
     padding: dimensions.standardSpacing,
-    borderTopLeftRadius: 8,
-    borderTopRightRadius: 8,
+    borderTopLeftRadius: dimensions.borderRadius,
+    borderTopRightRadius: dimensions.borderRadius,
     shadowColor: 'black',
     shadowOffset: {
       width: 0,
@@ -85,7 +86,7 @@ const styles = EStyleSheet.create({
     },
     shadowOpacity: 0.12,
     shadowRadius: 60,
-    elevation: 2,
+    elevation: dimensions.elevation,
   },
   taskName: {
     width: '100%',

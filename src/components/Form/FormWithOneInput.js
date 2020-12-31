@@ -1,8 +1,14 @@
 import React from 'react';
-import {Text, View, TextInput} from 'react-native';
+import {Text, View} from 'react-native';
 import {Overlay} from 'react-native-elements';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import {ButtonStandard} from '../CustomCoreComponents';
+import {
+  ButtonStandard,
+  InputStandard,
+  ErrorMessage,
+} from '../CustomCoreComponents';
+import Themes from '../../utils/Themes';
+const {dimensions} = Themes;
 
 const FormWithOneInput = ({
   visible,
@@ -21,20 +27,21 @@ const FormWithOneInput = ({
     setText('');
     setErrMessage('');
   };
+
   return (
     <Overlay
       isVisible={visible}
       onBackdropPress={toggleOverlay}
-      overlayStyle={{width: '90%', borderRadius: 10}}>
+      overlayStyle={styles.container}>
       <View style={styles.overlay}>
         <Text style={styles.overlayTitle}>{title}</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={(text) => setText(text)}
-          value={text}
+        <InputStandard
+          text={text}
+          setText={setText}
           placeholder={placeholder}
+          elevation
         />
-        {errMessage ? <Text style={styles.error}>{errMessage}</Text> : null}
+        {errMessage ? <ErrorMessage message={errMessage} /> : null}
         <ButtonStandard title={buttonTitle} onButtonPress={handleOnPress} />
       </View>
     </Overlay>
@@ -42,8 +49,12 @@ const FormWithOneInput = ({
 };
 
 const styles = EStyleSheet.create({
+  container: {
+    width: '90%',
+    borderRadius: dimensions.borderRadius,
+  },
   overlay: {
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     margin: '2rem',
   },
   overlayTitle: {
@@ -51,26 +62,6 @@ const styles = EStyleSheet.create({
     fontWeight: 'bold',
     alignSelf: 'center',
     textTransform: 'capitalize',
-  },
-  input: {
-    backgroundColor: '#eee',
-    marginTop: '3rem',
-    height: '12rem',
-    width: '100%',
-    padding: '2rem',
-    borderRadius: 5,
-    shadowColor: '#000',
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    shadowOffset: {width: 0, height: 0},
-    elevation: 1,
-    fontSize: '4rem',
-  },
-  error: {
-    color: 'red',
-    fontWeight: 'bold',
-    alignSelf: 'center',
-    marginTop: '4rem',
   },
 });
 

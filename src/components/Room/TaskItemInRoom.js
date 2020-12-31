@@ -42,11 +42,11 @@ const TaskItemInRoom = ({name, underTakerId, progress, deadline}) => {
 const styles = EStyleSheet.create({
   container: {
     backgroundColor: 'white',
-    marginTop: '3rem',
-    marginBottom: '0.5rem',
+    marginTop: '2rem',
+    marginBottom: '3rem',
     padding: dimensions.standardSpacing,
     marginHorizontal: '0.5rem',
-    borderRadius: 10,
+    borderRadius: dimensions.borderRadius,
     shadowColor: 'black',
     shadowOffset: {
       width: 0,
@@ -54,7 +54,7 @@ const styles = EStyleSheet.create({
     },
     shadowOpacity: 0.12,
     shadowRadius: 60,
-    elevation: 2,
+    elevation: dimensions.elevation,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

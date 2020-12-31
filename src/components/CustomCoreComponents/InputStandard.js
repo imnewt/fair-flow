@@ -1,23 +1,43 @@
 import React from 'react';
 import {View, Text, TextInput} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import Themes from '../../utils/Themes';
+const {dimensions} = Themes;
 
 const InputStandard = ({
   label,
+  placeholder,
   isPassword,
   isNumber,
+  isMultiline,
+  elevation,
   text,
   setText,
   disabled,
 }) => {
+  const customStyles = EStyleSheet.create({
+    description: {
+      height: '24rem',
+    },
+    elevation: {
+      elevation: dimensions.elevation8,
+    },
+  });
+
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>{label}</Text>
+      {label ? <Text style={styles.label}>{label}</Text> : null}
       <TextInput
         editable={disabled ? false : true}
+        multiline={isMultiline ? true : false}
         secureTextEntry={isPassword ? true : false}
         keyboardType={isNumber ? 'numeric' : 'default'}
-        style={styles.input}
+        placeholder={placeholder || ''}
+        style={[
+          styles.input,
+          isMultiline && customStyles.description,
+          elevation && customStyles.elevation,
+        ]}
         value={text}
         onChangeText={(text) => setText(text)}
       />
@@ -42,7 +62,7 @@ const styles = EStyleSheet.create({
     paddingLeft: '4rem',
     fontSize: '4rem',
     backgroundColor: 'white',
-    borderRadius: 10,
+    borderRadius: dimensions.borderRadius,
     shadowColor: 'black',
     shadowOffset: {
       width: 0,
@@ -50,7 +70,7 @@ const styles = EStyleSheet.create({
     },
     shadowOpacity: 0.12,
     shadowRadius: 60,
-    elevation: 2,
+    elevation: dimensions.elevation,
   },
 });
 

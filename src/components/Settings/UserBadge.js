@@ -2,6 +2,8 @@ import React from 'react';
 import {Text, View, Image} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Avatar from '../../assets/images/avatar.png';
+import Themes from '../../utils/Themes';
+const {dimensions} = Themes;
 
 const UserBadge = ({userName}) => {
   return (
@@ -22,7 +24,7 @@ const styles = EStyleSheet.create({
     padding: '4rem',
     alignItems: 'center',
     backgroundColor: 'white',
-    borderRadius: 10,
+    borderRadius: dimensions.borderRadius,
     shadowColor: 'black',
     shadowOffset: {
       width: 0,
@@ -30,7 +32,7 @@ const styles = EStyleSheet.create({
     },
     shadowOpacity: 0.12,
     shadowRadius: 60,
-    elevation: 2,
+    elevation: dimensions.elevation,
   },
   avatar: {
     width: '28rem',

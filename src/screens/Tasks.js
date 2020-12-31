@@ -1,16 +1,15 @@
 import React, {useState, useEffect} from 'react';
 import firestore from '@react-native-firebase/firestore';
-import {FlatList, Text} from 'react-native';
+import {FlatList} from 'react-native';
 import {observer, inject} from 'mobx-react';
-import {BaseContainer, TabTitle} from '../components/CustomCoreComponents';
+import {BaseContainer} from '../components/CustomCoreComponents';
 import {Task} from '../components/Task';
 import Themes from '../utils/Themes';
 const {dimensions} = Themes;
 
 const Tasks = inject('userStore')(
-  observer((props) => {
+  observer(({userStore}) => {
     const [tasks, setTasks] = useState([]);
-    const {userStore} = props;
 
     useEffect(() => {
       const subscriber = firestore()
@@ -28,7 +27,6 @@ const Tasks = inject('userStore')(
           );
           setTasks(filteredTasks);
         });
-      // Unsubscribe from events when no longer in use
       return () => subscriber();
     }, []);
 

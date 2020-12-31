@@ -4,7 +4,6 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import {Overlay} from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Themes from '../../utils/Themes';
-// import {TouchableOpacity} from 'react-native-gesture-handler';
 const {colors, dimensions} = Themes;
 
 const Alert = ({visible, toggleOverlay, content}) => (
@@ -40,13 +39,13 @@ const styles = EStyleSheet.create({
     width: '90%',
     alignItems: 'center',
     padding: 0,
-    borderRadius: 8,
+    borderRadius: dimensions.borderRadius,
   },
   icon: {
     width: '100%',
     backgroundColor: colors.alertBackground,
-    borderTopLeftRadius: 8,
-    borderTopRightRadius: 8,
+    borderTopLeftRadius: dimensions.borderRadius,
+    borderTopRightRadius: dimensions.borderRadius,
     alignItems: 'center',
     justifyContent: 'center',
     padding: '6rem',
@@ -59,7 +58,6 @@ const styles = EStyleSheet.create({
   text: {
     fontSize: '6rem',
     fontWeight: 'bold',
-    // textTransform: 'capitalize',
   },
   contentText: {
     marginTop: '1rem',

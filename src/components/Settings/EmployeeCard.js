@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Image, Text} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Themes from '../../utils/Themes';
-const {colors} = Themes;
+const {colors, dimensions} = Themes;
 
 const EmployeeCard = ({employee}) => {
   return (
@@ -26,7 +26,7 @@ const styles = EStyleSheet.create({
   image: {
     width: '35rem',
     height: '35rem',
-    borderRadius: 10,
+    borderRadius: dimensions.borderRadius,
   },
   name: {
     marginTop: '5rem',

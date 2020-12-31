@@ -1,14 +1,18 @@
 import React, {useState, useEffect} from 'react';
-import {Text, View, TextInput} from 'react-native';
+import {Text, View} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import firestore from '@react-native-firebase/firestore';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Picker} from '@react-native-picker/picker';
 import {Button, Overlay} from 'react-native-elements';
 import {DateTime} from 'luxon';
+import {
+  InputStandard,
+  ButtonStandard,
+  ErrorMessage,
+} from '../CustomCoreComponents';
 import Themes from '../../utils/Themes';
-const {colors, dimensions} = Themes;
-const DATE_FORMAT = 'dd/MM/yyyy';
+const {colors, dimensions, datetime} = Themes;
 
 const FormCreateTask = ({visible, setVisible, roomId, memberList}) => {
   const [taskName, setTaskName] = useState('');
@@ -20,9 +24,9 @@ const FormCreateTask = ({visible, setVisible, roomId, memberList}) => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    setDateText(DateTime.fromJSDate(new Date()).toFormat(DATE_FORMAT));
+    setDateText(DateTime.fromJSDate(new Date()).toFormat(datetime.DATE_FORMAT));
     memberList.length > 0 && setHandle(memberList[0].id);
-  });
+  }, [memberList]);
 
   const createTask = () => {
     setErrMessage('');
@@ -51,7 +55,9 @@ const FormCreateTask = ({visible, setVisible, roomId, memberList}) => {
     setShow(false);
     const currentDate = selectedDate || date;
     setDate(currentDate);
-    setDateText(DateTime.fromJSDate(selectedDate).toFormat(DATE_FORMAT));
+    setDateText(
+      DateTime.fromJSDate(selectedDate).toFormat(datetime.DATE_FORMAT),
+    );
   };
 
   return (
@@ -63,38 +69,26 @@ const FormCreateTask = ({visible, setVisible, roomId, memberList}) => {
         borderRadius: dimensions.borderRadius,
       }}>
       <View style={styles.overlay}>
-        <Text style={styles.overlayTitle}>Create new task</Text>
-        <Text style={styles.modalText}>Task name:</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={(taskName) => setTaskName(taskName)}
-          value={taskName}
+        <InputStandard
+          label="task name"
           placeholder="Enter task name here..."
+          elevation={10}
+          text={taskName}
+          setText={setTaskName}
         />
-        <Text style={styles.modalText}>Description:</Text>
-        <TextInput
-          style={[styles.input, styles.description]}
-          onChangeText={(description) => setDescription(description)}
-          value={description}
-          multiline={true}
+        <InputStandard
+          label="description"
           placeholder="Enter task description here..."
+          elevation={10}
+          text={description}
+          setText={setDescription}
+          isMultiline
         />
-        <Text style={styles.modalText}>Deadline:</Text>
-        <View style={styles.date}>
-          <Text style={styles.dateText}>{dateText}</Text>
-          <Button
-            title="Pick a date"
-            type="outline"
-            titleStyle={styles.dateButtonTitle}
-            buttonStyle={styles.dateButton}
-            onPress={() => setShow(true)}
-          />
-        </View>
         <Text style={styles.modalText}>Handle:</Text>
         <View style={styles.picker}>
           <Picker
             selectedValue={handle}
-            onValueChange={(itemValue, itemIndex) => setHandle(itemValue)}>
+            onValueChange={(itemValue) => setHandle(itemValue)}>
             {memberList.map((item) => (
               <Picker.Item
                 label={item.displayName}
@@ -103,6 +97,17 @@ const FormCreateTask = ({visible, setVisible, roomId, memberList}) => {
               />
             ))}
           </Picker>
+        </View>
+        <Text style={styles.modalText}>Deadline:</Text>
+        <View style={styles.date}>
+          <Text style={styles.dateText}>{dateText}</Text>
+          <Button
+            title="Pick a date"
+            type="outline"
+            titleStyle={styles.buttonTitle}
+            buttonStyle={styles.button}
+            onPress={() => setShow(true)}
+          />
         </View>
         {show ? (
           <DateTimePicker
@@ -114,13 +119,8 @@ const FormCreateTask = ({visible, setVisible, roomId, memberList}) => {
             onChange={handleChangeDate}
           />
         ) : null}
-        {errMessage ? <Text style={styles.error}>{errMessage}</Text> : null}
-        <Button
-          title="Create"
-          titleStyle={styles.overlayButtonText}
-          buttonStyle={styles.overlayButton}
-          onPress={createTask}
-        />
+        {errMessage ? <ErrorMessage message={errMessage} /> : null}
+        <ButtonStandard title="create" onButtonPress={createTask} />
       </View>
     </Overlay>
   );
@@ -138,65 +138,45 @@ const styles = EStyleSheet.create({
     textTransform: 'capitalize',
   },
   modalText: {
-    fontSize: '4rem',
+    marginVertical: '1.5rem',
+    marginLeft: '4rem',
+    color: 'black',
+    fontSize: '4.5rem',
     fontWeight: 'bold',
-    marginTop: '3rem',
-    marginBottom: '2rem',
-  },
-  input: {
-    backgroundColor: colors.inputBackground,
-    height: '12rem',
-    width: '100%',
-    padding: '2rem',
-    borderRadius: 5,
-    shadowColor: 'black',
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    shadowOffset: {width: 0, height: 0},
-    elevation: 1,
-    fontSize: '4rem',
-  },
-  description: {
-    height: '24rem',
+    textTransform: 'capitalize',
   },
   date: {
+    marginLeft: '3rem',
+    marginBottom: '2rem',
     flexDirection: 'row',
     alignItems: 'center',
   },
   dateText: {
     fontSize: '4rem',
   },
-  dateButtonTitle: {
+  buttonTitle: {
     fontSize: '3.5rem',
   },
-  dateButton: {
+  button: {
     marginLeft: '3rem',
     borderWidth: '0.3rem',
-    borderColor: colors.primary,
     paddingVertical: '0.5rem',
-    borderRadius: 10,
+    borderColor: colors.primary,
+    borderRadius: dimensions.borderRadius,
   },
   picker: {
-    backgroundColor: colors.inputBackground,
-  },
-  overlayButton: {
-    backgroundColor: colors.primary,
-    marginTop: '4rem',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 5,
-    padding: '3rem',
-  },
-  overlayButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-  },
-  error: {
-    color: colors.error,
-    fontWeight: 'bold',
-    alignSelf: 'center',
-    marginTop: '4rem',
+    marginHorizontal: '1rem',
+    marginBottom: '3rem',
+    borderRadius: dimensions.borderRadius,
+    backgroundColor: 'white',
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.12,
+    shadowRadius: 60,
+    elevation: dimensions.elevation8,
   },
 });
 
