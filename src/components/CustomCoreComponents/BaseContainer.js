@@ -14,6 +14,8 @@ const BaseContainer = ({
   buttonPress,
   stickyButton,
   setVisible,
+  hostId,
+  userId,
 }) => {
   return (
     <View style={styles.container}>
@@ -36,6 +38,9 @@ const BaseContainer = ({
       </ScrollView>
       {isLoading ? <Loading /> : null}
       {stickyButton ? <ButtonAdd setVisible={setVisible} /> : null}
+      {hostId && hostId === userId ? (
+        <ButtonAdd setVisible={setVisible} />
+      ) : null}
     </View>
   );
 };

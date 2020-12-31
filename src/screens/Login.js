@@ -8,7 +8,6 @@ import {
   Logo,
   InputWithIcon,
   ButtonGroup,
-  Alert,
 } from '../components/CustomCoreComponents';
 import Loading from './Loading';
 
@@ -20,7 +19,6 @@ const Login = inject('userStore')(
     const [password, setPassword] = useState('');
     const [errEmail, setErrEmail] = useState('');
     const [errPass, setErrPass] = useState('');
-    const [visibleLogin, setVisibleLogin] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -54,7 +52,6 @@ const Login = inject('userStore')(
         auth()
           .signInWithEmailAndPassword(email, password)
           .then(() => {
-            // setVisibleLogin(true);
             navigation.navigate('Main');
             const user = users.find((user) => user.email === email);
             userStore.saveUserData(user);
@@ -72,11 +69,6 @@ const Login = inject('userStore')(
             }
           });
       }
-    };
-
-    const toggleOverlay = () => {
-      setVisibleLogin(false);
-      navigation.navigate('Main');
     };
 
     return (
@@ -104,11 +96,6 @@ const Login = inject('userStore')(
           buttonPress2={() => navigation.navigate('Register')}
         />
         <Loading isVisible={isLoading} />
-        {/* <Alert
-          isVisible={visibleLogin}
-          toggleOverlay={toggleOverlay}
-          content="You successfully log in to Fair Flow"
-        /> */}
       </BaseContainer>
     );
   }),

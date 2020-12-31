@@ -4,52 +4,47 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import firestore from '@react-native-firebase/firestore';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Picker} from '@react-native-picker/picker';
-
 import {Button, Overlay} from 'react-native-elements';
 import {DateTime} from 'luxon';
 import Themes from '../../utils/Themes';
 const {colors, dimensions} = Themes;
 const DATE_FORMAT = 'dd/MM/yyyy';
 
-const FormCreateTask = ({
-  visible,
-  setVisible,
-  roomId,
-  memberList,
-  firstMemberId,
-}) => {
+const FormCreateTask = ({visible, setVisible, roomId, memberList}) => {
   const [taskName, setTaskName] = useState('');
   const [description, setDescription] = useState('');
   const [handle, setHandle] = useState('');
   const [errMessage, setErrMessage] = useState('');
-
   const [date, setDate] = useState(new Date());
   const [dateText, setDateText] = useState('');
-
   const [show, setShow] = useState(false);
 
   useEffect(() => {
     setDateText(DateTime.fromJSDate(new Date()).toFormat(DATE_FORMAT));
-    setHandle(firstMemberId);
-  }, []);
+    memberList.length > 0 && setHandle(memberList[0].id);
+  });
 
   const createTask = () => {
     setErrMessage('');
     if (!taskName) {
-      setErrMessage('This field can not be blank!');
-    } else {
-      firestore()
-        .collection('tasks')
-        .add({
-          name: taskName,
-          description,
-          progress: 0,
-          deadline: dateText,
-          roomId: roomId,
-          underTakerId: handle,
-        })
-        .then(() => setVisible(false));
+      setErrMessage('Task name can not be blank!');
+      return;
     }
+    if (memberList.length === 0) {
+      setErrMessage('You have no members in this room!');
+      return;
+    }
+    firestore()
+      .collection('tasks')
+      .add({
+        name: taskName,
+        description,
+        progress: 0,
+        deadline: dateText,
+        roomId: roomId,
+        underTakerId: handle,
+      })
+      .then(() => setVisible(false));
   };
 
   const handleChangeDate = (event, selectedDate) => {
@@ -119,7 +114,6 @@ const FormCreateTask = ({
             onChange={handleChangeDate}
           />
         ) : null}
-
         {errMessage ? <Text style={styles.error}>{errMessage}</Text> : null}
         <Button
           title="Create"
@@ -150,12 +144,12 @@ const styles = EStyleSheet.create({
     marginBottom: '2rem',
   },
   input: {
-    backgroundColor: '#eee',
+    backgroundColor: colors.inputBackground,
     height: '12rem',
     width: '100%',
     padding: '2rem',
     borderRadius: 5,
-    shadowColor: '#000',
+    shadowColor: 'black',
     shadowOpacity: 0.3,
     shadowRadius: 10,
     shadowOffset: {width: 0, height: 0},
@@ -178,15 +172,15 @@ const styles = EStyleSheet.create({
   dateButton: {
     marginLeft: '3rem',
     borderWidth: '0.3rem',
-    borderColor: '#2ea7e0',
+    borderColor: colors.primary,
     paddingVertical: '0.5rem',
     borderRadius: 10,
   },
   picker: {
-    backgroundColor: '#eee',
+    backgroundColor: colors.inputBackground,
   },
   overlayButton: {
-    backgroundColor: '#2ea7e0',
+    backgroundColor: colors.primary,
     marginTop: '4rem',
     justifyContent: 'center',
     alignItems: 'center',
@@ -199,7 +193,7 @@ const styles = EStyleSheet.create({
     textTransform: 'uppercase',
   },
   error: {
-    color: 'red',
+    color: colors.error,
     fontWeight: 'bold',
     alignSelf: 'center',
     marginTop: '4rem',

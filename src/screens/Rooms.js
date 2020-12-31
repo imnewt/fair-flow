@@ -3,7 +3,7 @@ import {FlatList} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import {observer, inject} from 'mobx-react';
 import {Room} from '../components/Room';
-import {BaseContainer, TabTitle} from '../components/CustomCoreComponents';
+import {BaseContainer} from '../components/CustomCoreComponents';
 import {FormWithOneInput} from '../components/Form';
 
 const Rooms = inject('userStore')(

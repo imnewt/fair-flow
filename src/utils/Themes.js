@@ -4,21 +4,12 @@ export default {
   colors: {
     primary: '#2EA7E0',
     secondary: '#C2C1BF',
-    // warning: '#FE9227',
     tabInactiveColor: '#8D8E91',
-    // warning10: '#EE76001A',
     error: '#DB3A34',
-    // error10: '#990011FF1A',
+    inputBackground: '#EEEEEE',
     alertBackground: '#3FC59D',
     alertButton: '#E2747E',
-    // success: '#215E21', //27AE60 | 008000
-    // success10: '#215E211A',
-    // disabled: '#C8C9CC',
-    // txtPrimary: '#053A66',
-    // txtSecondary: '#717275',
-    // txtDisabled: '#C8C9CC',
     backgroundColor: '#FBFBFB',
-    // modalBackground: '#00000080',
     transparent: 'transparent',
   },
   dimensions: {

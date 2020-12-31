@@ -1,12 +1,14 @@
 import React from 'react';
 import {View, Image, Text} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import Themes from '../../utils/Themes';
+const {colors} = Themes;
 
-const EmployeeInfo = ({employee}) => {
+const EmployeeCard = ({employee}) => {
   return (
     <View style={styles.container}>
-      <Image source={employee.imgUrl} style={styles.img} />
-      <View style={styles.info}>
+      <Image source={employee.avatar} style={styles.image} />
+      <View style={{alignItems: 'center'}}>
         <Text style={styles.name}>{employee.name}</Text>
         <Text style={styles.position}>{employee.position}</Text>
       </View>
@@ -21,13 +23,10 @@ const styles = EStyleSheet.create({
     marginBottom: '8rem',
     alignItems: 'center',
   },
-  img: {
+  image: {
     width: '35rem',
     height: '35rem',
     borderRadius: 10,
-  },
-  info: {
-    alignItems: 'center',
   },
   name: {
     marginTop: '5rem',
@@ -37,9 +36,9 @@ const styles = EStyleSheet.create({
   },
   position: {
     marginTop: '2rem',
-    color: '#AAA',
+    color: colors.secondary,
     textTransform: 'capitalize',
   },
 });
 
-export default EmployeeInfo;
+export default EmployeeCard;

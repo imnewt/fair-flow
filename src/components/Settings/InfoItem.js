@@ -11,8 +11,9 @@ const InfoItem = ({data}) => {
         <FlatList
           data={data.values}
           renderItem={({item}) => (
-            <Text style={[styles.content, {fontStyle: 'italic'}]}>
-              {item.title}: <Text style={styles.content}>{item.content}</Text>
+            <Text style={styles.values}>
+              - {item.title}:{' '}
+              <Text style={{fontStyle: 'normal'}}>{item.content}</Text>
             </Text>
           )}
           keyExtractor={(item) => item.title}
@@ -28,18 +29,17 @@ const styles = EStyleSheet.create({
   },
   heading: {
     fontWeight: 'bold',
-    fontSize: '5.2rem',
-    fontStyle: 'italic',
+    fontSize: '5.5rem',
   },
   content: {
     marginTop: '1.5rem',
-    fontSize: '4.2rem',
-    // fontStyle: 'normal',
+    fontSize: '4.5rem',
     textAlign: 'justify',
   },
-  value: {
+  values: {
     marginTop: '1.5rem',
-    fontSize: '4.2rem',
+    fontSize: '4.5rem',
+    fontStyle: 'italic',
   },
 });
 

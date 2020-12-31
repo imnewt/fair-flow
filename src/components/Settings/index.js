@@ -1,6 +1,6 @@
 import UserBadge from './UserBadge';
 import SettingOption from './SettingOption';
 import InfoItem from './InfoItem';
-import EmployeeInfo from './EmployeeInfo';
+import EmployeeCard from './EmployeeCard';
 
-export {UserBadge, SettingOption, InfoItem, EmployeeInfo};
+export {UserBadge, SettingOption, InfoItem, EmployeeCard};
