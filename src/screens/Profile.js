@@ -66,7 +66,7 @@ const Profile = inject('userStore')(
     };
 
     return (
-      <BaseContainer tabTitle="edit profile" isCenter>
+      <BaseContainer tabTitle="Edit Profile" isCenter>
         <InputStandard label="email" text={email} setText={setEmail} disabled />
         <InputStandard label="display name" text={name} setText={setName} />
         <InputStandard

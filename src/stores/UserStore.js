@@ -1,12 +1,12 @@
 import {makeObservable, observable, computed, action} from 'mobx';
 
 class UserStore {
-  // userData = null;
-  userData = {
-    email: 'truc@gmail.com',
-    displayName: 'truc',
-    id: 'hB5scY9aQldEof0MxAnx',
-  };
+  userData = null;
+  // userData = {
+  //   email: 'truc@gmail.com',
+  //   displayName: 'truc',
+  //   id: 'hB5scY9aQldEof0MxAnx',
+  // };
 
   constructor() {
     makeObservable(this, {

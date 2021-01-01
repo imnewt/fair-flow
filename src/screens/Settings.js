@@ -20,7 +20,6 @@ const Settings = inject('userStore')(
     useDidMountEffect(() => {
       const {updated} = route.params;
       updated && setUser(userStore.userData);
-      // console.log(userStore.userData);
     }, [route]);
 
     const handleLogout = () => {
@@ -29,7 +28,7 @@ const Settings = inject('userStore')(
     };
 
     return (
-      <BaseContainer tabTitle="settings">
+      <BaseContainer tabTitle="Settings">
         <UserBadge userName={user.displayName} />
         <SettingOption
           iconName="ios-person"

@@ -34,7 +34,7 @@ const FormWithOneInput = ({
       onBackdropPress={toggleOverlay}
       overlayStyle={styles.container}>
       <View style={styles.overlay}>
-        <Text style={styles.overlayTitle}>{title}</Text>
+        <Text style={styles.title}>{title}</Text>
         <InputStandard
           text={text}
           setText={setText}
@@ -57,7 +57,8 @@ const styles = EStyleSheet.create({
     backgroundColor: 'white',
     margin: '2rem',
   },
-  overlayTitle: {
+  title: {
+    marginBottom: '2rem',
     fontSize: '6rem',
     fontWeight: 'bold',
     alignSelf: 'center',

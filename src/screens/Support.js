@@ -5,7 +5,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 
 const Support = () => {
   return (
-    <BaseContainer tabTitle="support" isCenter>
+    <BaseContainer tabTitle="Support" isCenter>
       <View style={styles.container}>
         <Text style={styles.text}>
           For further information or any support, please contact us via:

@@ -56,6 +56,7 @@ const RoomDetail = inject('userStore')(
     return (
       <BaseContainer
         tabTitle={room.name}
+        roomShortId={room.shortId}
         hostId={room.hostId}
         userId={userStore.userData.id}
         setVisible={setVisible}>

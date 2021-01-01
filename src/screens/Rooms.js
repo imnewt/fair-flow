@@ -95,7 +95,7 @@ const Rooms = inject('userStore')(
     return (
       <BaseContainer
         stickyButton
-        tabTitle="rooms"
+        tabTitle="Rooms"
         buttonTitle="Join room"
         buttonPress={() => setVisibleJoin(true)}
         setVisible={setVisibleCreate}>

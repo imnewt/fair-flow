@@ -11,7 +11,7 @@ const Loading = ({isVisible}) => (
       justifyContent: 'center',
       alignItems: 'center',
     }}
-    visible={isVisible}
+    isVisible={isVisible}
     fullScreen>
     <ActivityIndicator size="large" color={colors.primary} />
   </Overlay>

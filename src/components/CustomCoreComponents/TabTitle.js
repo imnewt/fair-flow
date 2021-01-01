@@ -5,7 +5,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import Themes from '../../utils/Themes';
 const {colors, dimensions} = Themes;
 
-const TabTitle = ({title, buttonTitle, buttonPress}) => {
+const TabTitle = ({title, buttonTitle, buttonPress, roomShortId}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title} </Text>
@@ -18,6 +18,7 @@ const TabTitle = ({title, buttonTitle, buttonPress}) => {
           onPress={buttonPress}
         />
       ) : null}
+      {roomShortId ? <Text style={styles.roomId}>{roomShortId}</Text> : null}
     </View>
   );
 };
@@ -32,7 +33,6 @@ const styles = EStyleSheet.create({
   title: {
     fontSize: '8rem',
     fontWeight: 'bold',
-    textTransform: 'capitalize',
     borderBottomWidth: '1rem',
     borderBottomColor: colors.primary,
     color: colors.secondary,
@@ -46,6 +46,11 @@ const styles = EStyleSheet.create({
     borderColor: colors.primary,
     paddingVertical: '0.5rem',
     borderRadius: 10,
+  },
+  roomId: {
+    fontSize: '8rem',
+    fontWeight: 'bold',
+    color: colors.secondary,
   },
 });
 

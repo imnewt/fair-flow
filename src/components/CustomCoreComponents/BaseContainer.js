@@ -16,12 +16,14 @@ const BaseContainer = ({
   setVisible,
   hostId,
   userId,
+  roomShortId,
 }) => {
   return (
     <View style={styles.container}>
       {tabTitle && (
         <TabTitle
           title={tabTitle}
+          roomShortId={roomShortId}
           buttonTitle={buttonTitle}
           buttonPress={buttonPress}
         />

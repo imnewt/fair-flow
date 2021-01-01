@@ -61,7 +61,7 @@ const Password = inject('userStore')(
     };
 
     return (
-      <BaseContainer tabTitle="change password" isCenter>
+      <BaseContainer tabTitle="Change Password" isCenter>
         <InputStandard
           label="current password"
           text={pass}

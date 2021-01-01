@@ -97,7 +97,7 @@ const employees = [
 
 const About = () => {
   return (
-    <BaseContainer tabTitle="about us">
+    <BaseContainer tabTitle="About Us">
       <FlatList
         data={values}
         renderItem={({item}) => <InfoItem data={item} />}

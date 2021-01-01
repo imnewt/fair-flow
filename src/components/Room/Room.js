@@ -47,7 +47,8 @@ const styles = EStyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    marginVertical: '2rem',
+    marginTop: '4rem',
+    marginBottom: '0.5rem',
     borderRadius: dimensions.borderRadius,
     shadowColor: 'black',
     shadowOffset: {

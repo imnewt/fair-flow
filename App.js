@@ -18,7 +18,7 @@ import Themes from './src/utils/Themes';
 const {colors, dimensions} = Themes;
 
 EStyleSheet.build({$rem: dimensions.screenWidth / 100});
-LogBox.ignoreAllLogs();
+// LogBox.ignoreAllLogs();
 
 const Tab = createBottomTabNavigator();
 const Main = () => {
@@ -68,7 +68,7 @@ export default function App() {
     <Provider {...stores}>
       <NavigationContainer>
         <RootStack.Navigator
-          initialRouteName="Main"
+          initialRouteName="Login"
           screenOptions={{
             headerShown: false,
             ...TransitionPresets.SlideFromRightIOS,

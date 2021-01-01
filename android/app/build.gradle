@@ -136,6 +136,14 @@ android {
         versionName "1.0"
         multiDexEnabled true
     }
+    signingConfigs {
+        release {
+            storeFile file(MY_AWESOME_PROJECT_RELEASE_STORE_FILE)
+            storePassword "123456"
+            keyAlias MY_AWESOME_PROJECT_RELEASE_KEY_ALIAS
+            keyPassword "123456"
+        }
+    }
     splits {
         abi {
             reset()
@@ -162,6 +170,7 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
         }
     }
 

@@ -44,7 +44,7 @@ const policies = [
 
 const Policy = () => {
   return (
-    <BaseContainer tabTitle="privacy policy">
+    <BaseContainer tabTitle="Privacy Policy">
       <FlatList
         data={policies}
         renderItem={({item}) => <InfoItem data={item} />}
