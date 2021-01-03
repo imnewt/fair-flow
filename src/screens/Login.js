@@ -6,6 +6,7 @@ import {observer, inject} from 'mobx-react';
 import {
   BaseContainer,
   Logo,
+  Alert,
   InputWithIcon,
   ButtonGroup,
 } from '../components/CustomCoreComponents';
@@ -20,6 +21,7 @@ const Login = inject('userStore')(
     const [errEmail, setErrEmail] = useState('');
     const [errPass, setErrPass] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [visible, setVisible] = useState(false);
 
     useEffect(() => {
       const subcriber = firestore()
@@ -38,44 +40,56 @@ const Login = inject('userStore')(
     }, []);
 
     const handleLogin = async () => {
+      setIsLoading(true);
       setErrEmail('');
       setErrPass('');
       if (!email) {
+        setIsLoading(false);
         setErrEmail('This field can not be blank!');
-      } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+        return;
+      }
+      if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+        setIsLoading(false);
         setErrEmail('Your email address is invalid!');
+        return;
       }
       if (!password) {
+        setIsLoading(false);
         setErrPass('This field can not be blank!');
-      } else {
-        setIsLoading(true);
-        auth()
-          .signInWithEmailAndPassword(email, password)
-          .then(() => {
-            navigation.navigate('Main');
-            const user = users.find((user) => user.email === email);
-            userStore.saveUserData(user);
-            setIsLoading(false);
-            setErrEmail('');
-            setErrPass('');
-          })
-          .catch((error) => {
-            setIsLoading(false);
-            if (error.code === 'auth/user-not-found') {
-              setErrEmail('User not found!');
-            }
-            if (error.code === 'auth/wrong-password') {
-              setErrPass('Wrong password!');
-            }
-          });
+        return;
       }
+      auth()
+        .signInWithEmailAndPassword(email, password)
+        .then(() => {
+          setIsLoading(false);
+          setVisible(true);
+          const user = users.find((user) => user.email === email);
+          userStore.saveUserData(user);
+          setIsLoading(false);
+          setErrEmail('');
+          setErrPass('');
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          if (error.code === 'auth/user-not-found') {
+            setErrEmail('User not found!');
+          }
+          if (error.code === 'auth/wrong-password') {
+            setErrPass('Wrong password!');
+          }
+        });
+    };
+
+    const toggleOverlay = () => {
+      navigation.navigate('Main');
+      setVisible(false);
     };
 
     return (
       <BaseContainer isCenter>
         <Logo />
         <InputWithIcon
-          placeholder="Username"
+          placeholder="Email"
           iconName="ios-person"
           text={email}
           setText={setEmail}
@@ -96,6 +110,11 @@ const Login = inject('userStore')(
           buttonPress2={() => navigation.navigate('Register')}
         />
         <Loading isVisible={isLoading} />
+        <Alert
+          visible={visible}
+          toggleOverlay={toggleOverlay}
+          content="You successfully log in to Fair Flow"
+        />
       </BaseContainer>
     );
   }),

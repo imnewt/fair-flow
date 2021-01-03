@@ -29,7 +29,7 @@ const TaskExpand = ({description, progress, id}) => {
       Number(newProgress) > 100 ||
       newProgress == ''
     ) {
-      setErrMessage('Progress must be an integer from 0 to 100!');
+      setErrMessage('Progress must be a number from 0 to 100!');
     } else {
       firestore()
         .collection('tasks')

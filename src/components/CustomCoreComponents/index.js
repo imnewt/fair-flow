@@ -8,6 +8,7 @@ import InputWithIcon from './InputWithIcon';
 import ButtonStandard from './ButtonStandard';
 import ButtonGroup from './ButtonGroup';
 import ButtonAdd from './ButtonAdd';
+import EmptyState from './EmptyState';
 
 export {
   BaseContainer,
@@ -20,4 +21,5 @@ export {
   ButtonStandard,
   ButtonGroup,
   ButtonAdd,
+  EmptyState,
 };

@@ -37,7 +37,7 @@ const Room = ({room, index}) => {
         activeOpacity={0.7}>
         <Text style={styles.roomName}>{room.name}</Text>
         <Text style={styles.text}>Host: {hostName}</Text>
-        <Text style={styles.text}>Members: {room.memberIds.length + 1}</Text>
+        <Text style={styles.text}>Members: {room.memberIds.length}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -46,6 +46,7 @@ const Room = ({room, index}) => {
 const styles = EStyleSheet.create({
   container: {
     flex: 1,
+    // width: '47%',
     backgroundColor: 'white',
     marginTop: '4rem',
     marginBottom: '0.5rem',

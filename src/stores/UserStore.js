@@ -2,9 +2,10 @@ import {makeObservable, observable, computed, action} from 'mobx';
 
 class UserStore {
   userData = null;
+  // FOR TESTING PURPOSE
   // userData = {
   //   email: 'truc@gmail.com',
-  //   displayName: 'truc',
+  //   displayName: 'Tan Truc',
   //   id: 'hB5scY9aQldEof0MxAnx',
   // };
 
@@ -14,7 +15,6 @@ class UserStore {
       // isAdult: computed,
       saveUserData: action,
       updateUserData: action,
-      wipeData: action,
     });
   }
 
@@ -32,10 +32,6 @@ class UserStore {
     this.userData.displayName = name;
     this.userData.phoneNumber = phone;
     this.userData.address = address;
-  }
-
-  wipeData() {
-    this.userData = null;
   }
 }
 

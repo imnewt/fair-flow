@@ -24,7 +24,7 @@ const Settings = inject('userStore')(
 
     const handleLogout = () => {
       navigation.navigate('Login');
-      userStore.wipeData();
+      // userStore.wipeData();
     };
 
     return (

@@ -7,10 +7,7 @@ import Themes from '../../utils/Themes';
 const {colors, dimensions} = Themes;
 
 const Alert = ({visible, toggleOverlay, content}) => (
-  <Overlay
-    isVisible={visible}
-    // onBackdropPress={toggleOverlay}
-    overlayStyle={styles.container}>
+  <Overlay isVisible={visible} overlayStyle={styles.container}>
     <View style={{width: '100%'}}>
       <View style={styles.icon}>
         <Ionicons

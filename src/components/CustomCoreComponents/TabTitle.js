@@ -36,6 +36,7 @@ const styles = EStyleSheet.create({
     borderBottomWidth: '1rem',
     borderBottomColor: colors.primary,
     color: colors.secondary,
+    flexShrink: 1,
   },
   buttonTitle: {
     fontSize: '3.5rem',
@@ -45,7 +46,8 @@ const styles = EStyleSheet.create({
     borderWidth: '0.3rem',
     borderColor: colors.primary,
     paddingVertical: '0.5rem',
-    borderRadius: 10,
+    // borderRadius: 10,
+    overflow: 'hidden',
   },
   roomId: {
     fontSize: '8rem',

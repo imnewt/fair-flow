@@ -39,7 +39,8 @@ const styles = EStyleSheet.create({
     borderWidth: '0.3rem',
     borderColor: colors.primary,
     paddingVertical: '3.5rem',
-    borderRadius: 10,
+    borderRadius: 5,
+    overflow: 'hidden',
   },
   dividerBlock: {
     marginTop: '3rem',

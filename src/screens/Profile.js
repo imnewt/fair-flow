@@ -34,12 +34,12 @@ const Profile = inject('userStore')(
     const updateProfile = () => {
       setIsLoading(true);
       const {userData} = userStore;
-      if (!name || !phone || !address) {
-        setErrMessage('Fields can not be blank!');
+      if (!name) {
+        setErrMessage('Display name can not be blank!');
         setIsLoading(false);
         return;
       }
-      if (phone.length !== 10) {
+      if (phone && phone.length !== 10) {
         setErrMessage('Phone number must have 10 digits!');
         setIsLoading(false);
         return;
@@ -49,8 +49,8 @@ const Profile = inject('userStore')(
         .doc(userData.id)
         .update({
           displayName: name,
-          phoneNumber: phone,
-          address: address,
+          phoneNumber: phone || '',
+          address: address || '',
         })
         .then(() => {
           setIsLoading(false);

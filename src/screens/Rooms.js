@@ -3,22 +3,22 @@ import {FlatList} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import {observer, inject} from 'mobx-react';
 import {Room} from '../components/Room';
-import {BaseContainer} from '../components/CustomCoreComponents';
+import {BaseContainer, EmptyState} from '../components/CustomCoreComponents';
 import {FormWithOneInput} from '../components/Form';
+import Loading from './Loading';
 
 const Rooms = inject('userStore')(
-  observer((props) => {
+  observer(({userStore}) => {
     const [rooms, setRooms] = useState([]);
-    const {userStore} = props;
-
     const [roomShortId, setRoomShortId] = useState('');
     const [errRoomShortId, setErrRoomShortId] = useState('');
     const [visibleJoin, setVisibleJoin] = useState(false);
-
     const [allRooms, setAllRooms] = useState('');
     const [roomName, setRoomName] = useState('');
     const [errRoomName, setErrRoomName] = useState('');
     const [visibleCreate, setVisibleCreate] = useState(false);
+    const [isEmpty, setIsEmpty] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const getShortId = () => {
       var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -32,6 +32,7 @@ const Rooms = inject('userStore')(
     };
 
     useEffect(() => {
+      setIsLoading(true);
       const subscriber = firestore()
         .collection('rooms')
         .onSnapshot((querySnapshot) => {
@@ -42,13 +43,15 @@ const Rooms = inject('userStore')(
               id: documentSnapshot.id,
             });
           });
+          setIsEmpty(false);
           const filteredRooms = rooms.filter(
             (room) =>
               room.hostId === userStore.userData.id ||
               room.memberIds.includes(userStore.userData.id),
           );
+          setIsLoading(false);
+          filteredRooms.length > 0 ? setRooms(filteredRooms) : setIsEmpty(true);
           setAllRooms(rooms);
-          setRooms(filteredRooms);
         });
       return () => subscriber();
     }, []);
@@ -57,17 +60,21 @@ const Rooms = inject('userStore')(
       setErrRoomName('');
       if (!roomName) {
         setErrRoomName('This field can not be blank!');
-      } else {
-        firestore()
-          .collection('rooms')
-          .add({
-            name: roomName,
-            shortId: getShortId(),
-            hostId: userStore.userData.id,
-            memberIds: [],
-          })
-          .then(() => setVisibleCreate(false));
+        return;
       }
+      if (roomName.length > 15) {
+        setErrRoomName('Maximum length for room name is 15!');
+        return;
+      }
+      firestore()
+        .collection('rooms')
+        .add({
+          name: roomName,
+          shortId: getShortId(),
+          hostId: userStore.userData.id,
+          memberIds: firestore.FieldValue.arrayUnion(userStore.userData.id),
+        })
+        .then(() => setVisibleCreate(false));
     };
 
     const joinRoom = () => {
@@ -76,7 +83,7 @@ const Rooms = inject('userStore')(
         setErrRoomShortId('This field can not be blank!');
       } else {
         const findRoomWithShortId = allRooms.find(
-          (room) => room.shortId === roomShortId,
+          (room) => room.shortId.toUpperCase() === roomShortId.toUpperCase(),
         );
         if (!findRoomWithShortId) {
           setErrRoomShortId('Room does not exist!');
@@ -98,14 +105,16 @@ const Rooms = inject('userStore')(
         tabTitle="Rooms"
         buttonTitle="Join room"
         buttonPress={() => setVisibleJoin(true)}
-        setVisible={setVisibleCreate}>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={rooms}
-          renderItem={({item, index}) => <Room room={item} index={index} />}
-          keyExtractor={(item) => item.id}
-          numColumns={2}
-        />
+        setVisible={setVisibleCreate}
+        isCenter={rooms.length === 0 ? true : false}>
+        {rooms.length > 0 ? (
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={rooms}
+            renderItem={({item, index}) => <Room room={item} index={index} />}
+            keyExtractor={(item) => item.id}
+          />
+        ) : null}
         <FormWithOneInput
           visible={visibleJoin}
           setVisible={setVisibleJoin}
@@ -130,6 +139,14 @@ const Rooms = inject('userStore')(
           buttonTitle="Create"
           handleOnPress={createRoom}
         />
+        <Loading isVisible={isLoading} />
+        {isEmpty ? (
+          <EmptyState
+            screenName="Rooms"
+            text1="You haven't join any rooms yet"
+            text2="Find one"
+          />
+        ) : null}
       </BaseContainer>
     );
   }),
