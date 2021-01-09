@@ -49,14 +49,13 @@ const Register = () => {
     }
     setIsLoading(true);
     auth()
-      .createUserWithEmailAndPassword(email, password)
+      .createUserWithEmailAndPassword(email.toLowerCase(), password)
       .then(() => {
         firestore()
           .collection('users')
           .add({
             email: email,
             displayName: displayName,
-            password: password,
           })
           .then(() => {
             setVisible(true);

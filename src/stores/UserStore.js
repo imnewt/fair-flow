@@ -1,7 +1,7 @@
 import {makeObservable, observable, computed, action} from 'mobx';
 
 class UserStore {
-  userData = null;
+  userData = {};
   // FOR TESTING PURPOSE
   // userData = {
   //   email: 'truc@gmail.com',

@@ -101,12 +101,12 @@ const About = () => {
       <FlatList
         data={values}
         renderItem={({item}) => <InfoItem data={item} />}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
       />
       <FlatList
         data={employees}
         renderItem={({item}) => <EmployeeCard employee={item} />}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         numColumns={2}
       />
     </BaseContainer>

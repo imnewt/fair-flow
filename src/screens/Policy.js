@@ -48,7 +48,7 @@ const Policy = () => {
       <FlatList
         data={policies}
         renderItem={({item}) => <InfoItem data={item} />}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
       />
     </BaseContainer>
   );

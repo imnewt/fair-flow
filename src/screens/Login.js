@@ -59,7 +59,7 @@ const Login = inject('userStore')(
         return;
       }
       auth()
-        .signInWithEmailAndPassword(email, password)
+        .signInWithEmailAndPassword(email.toLowerCase(), password)
         .then(() => {
           setIsLoading(false);
           setVisible(true);

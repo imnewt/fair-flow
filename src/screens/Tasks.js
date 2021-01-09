@@ -1,12 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {FlatList} from 'react-native';
 import {observer, inject} from 'mobx-react';
 import firestore from '@react-native-firebase/firestore';
 import {BaseContainer, EmptyState} from '../components/CustomCoreComponents';
 import {Task} from '../components/Task';
 import Loading from './Loading';
-import Themes from '../utils/Themes';
-const {dimensions} = Themes;
 
 const Tasks = inject('userStore')(
   observer(({userStore}) => {
@@ -40,17 +37,9 @@ const Tasks = inject('userStore')(
       <BaseContainer
         tabTitle="Tasks"
         isCenter={tasks.length === 0 ? true : false}>
-        {tasks.length > 0 ? (
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            data={tasks}
-            renderItem={({item}) => <Task task={item} />}
-            keyExtractor={(item) => item.id}
-            contentContainerStyle={{
-              paddingBottom: dimensions.standardSpacing,
-            }}
-          />
-        ) : null}
+        {tasks.length > 0
+          ? tasks.map((item, index) => <Task task={item} key={index} />)
+          : null}
         <Loading isVisible={isLoading} />
         {isEmpty ? (
           <EmptyState

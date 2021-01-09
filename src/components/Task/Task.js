@@ -74,6 +74,7 @@ const Task = ({task}) => {
 const styles = EStyleSheet.create({
   container: {
     marginTop: '4rem',
+    marginBottom: '0.5rem',
     marginHorizontal: '0.5rem',
     backgroundColor: 'white',
     padding: dimensions.standardSpacing,

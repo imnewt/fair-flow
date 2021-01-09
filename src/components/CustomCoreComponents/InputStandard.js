@@ -1,6 +1,7 @@
-import React from 'react';
-import {View, Text, TextInput} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, TextInput, TouchableOpacity} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import Themes from '../../utils/Themes';
 const {dimensions} = Themes;
 
@@ -15,6 +16,8 @@ const InputStandard = ({
   setText,
   disabled,
 }) => {
+  const [show, setShow] = useState(false);
+
   const customStyles = EStyleSheet.create({
     description: {
       height: '24rem',
@@ -30,7 +33,7 @@ const InputStandard = ({
       <TextInput
         editable={disabled ? false : true}
         multiline={isMultiline ? true : false}
-        secureTextEntry={isPassword ? true : false}
+        secureTextEntry={isPassword ? (show ? false : true) : false}
         keyboardType={isNumber ? 'numeric' : 'default'}
         placeholder={placeholder || ''}
         style={[
@@ -41,6 +44,17 @@ const InputStandard = ({
         value={text}
         onChangeText={(text) => setText(text)}
       />
+      {isPassword && (
+        <TouchableOpacity
+          style={styles.icon}
+          activeOpacity={0.7}
+          onPress={() => setShow(!show)}>
+          <Ionicons
+            name={show ? 'ios-eye' : 'ios-eye-off'}
+            size={dimensions.chevronIconSize}
+          />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -48,6 +62,7 @@ const InputStandard = ({
 const styles = EStyleSheet.create({
   container: {
     marginVertical: '3rem',
+    position: 'relative',
   },
   label: {
     marginVertical: '1.5rem',
@@ -71,6 +86,16 @@ const styles = EStyleSheet.create({
     shadowOpacity: 0.12,
     shadowRadius: 60,
     elevation: dimensions.elevation,
+  },
+  icon: {
+    position: 'absolute',
+    width: '10rem',
+    height: '10rem',
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: '2rem',
+    bottom: '1rem',
+    elevation: 2,
   },
 });
 
