@@ -6,7 +6,7 @@ import firestore from '@react-native-firebase/firestore';
 import Themes from '../../utils/Themes';
 const {colors, dimensions} = Themes;
 
-const TaskItemInRoom = ({name, underTakerId, progress, deadline}) => {
+const TaskItemInRoom = ({name, underTakerId, progress, status, deadline}) => {
   const [underTakerName, setUnderTakerName] = useState('');
 
   useEffect(() => {
@@ -26,7 +26,10 @@ const TaskItemInRoom = ({name, underTakerId, progress, deadline}) => {
         <Text style={styles.text}>{underTakerName}</Text>
         <Text style={styles.text}>{deadline}</Text>
       </View>
-      <ProgressCircle
+      <View>
+        <Text style={styles.text}>{status}</Text>
+      </View>
+      {/* <ProgressCircle
         percent={progress}
         radius={40}
         borderWidth={8}
@@ -34,7 +37,7 @@ const TaskItemInRoom = ({name, underTakerId, progress, deadline}) => {
         shadowColor={colors.secondary}
         bgColor="white">
         <Text style={styles.progress}>{progress}%</Text>
-      </ProgressCircle>
+      </ProgressCircle> */}
     </View>
   );
 };

@@ -3,6 +3,7 @@ import {Text, View} from 'react-native';
 import ProgressCircle from 'react-native-progress-circle';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {Overlay} from 'react-native-elements';
+import {Picker} from '@react-native-picker/picker';
 import firestore from '@react-native-firebase/firestore';
 import {
   InputStandard,
@@ -12,9 +13,10 @@ import {
 import Themes from '../../utils/Themes';
 const {colors, dimensions} = Themes;
 
-const TaskExpand = ({description, progress, id}) => {
+const TaskExpand = ({description, progress, status, id}) => {
   const [visible, setVisible] = useState(false);
-  const [newProgress, setNewProgress] = useState('');
+  // const [newProgress, setNewProgress] = useState('');
+  const [newStatus, setNewStatus] = useState('');
   const [errMessage, setErrMessage] = useState('');
 
   const toggleOverlay = () => {
@@ -24,25 +26,25 @@ const TaskExpand = ({description, progress, id}) => {
   };
 
   const updateProgress = () => {
-    if (
-      Number(newProgress) < 0 ||
-      Number(newProgress) > 100 ||
-      newProgress == ''
-    ) {
-      setErrMessage('Progress must be a number from 0 to 100!');
-    } else {
-      firestore()
-        .collection('tasks')
-        .doc(id)
-        .update({
-          progress: Number(newProgress),
-        })
-        .then(() => {
-          setVisible(false);
-          setNewProgress('');
-          setErrMessage('');
-        });
-    }
+    // if (
+    //   Number(newProgress) < 0 ||
+    //   Number(newProgress) > 100 ||
+    //   newProgress == ''
+    // ) {
+    //   setErrMessage('Progress must be a number from 0 to 100!');
+    // } else {
+    firestore()
+      .collection('tasks')
+      .doc(id)
+      .update({
+        status: newStatus,
+      })
+      .then(() => {
+        setVisible(false);
+        // setNewStatus('');
+        // setErrMessage('');
+      });
+    // }
   };
 
   return (
@@ -52,7 +54,9 @@ const TaskExpand = ({description, progress, id}) => {
         <Text style={styles.description} numberOfLines={1}>
           {description}
         </Text>
-        <View style={styles.progressBlock}>
+        <Text style={styles.title}>Status</Text>
+        <Text style={styles.description}>{status}</Text>
+        {/* <View style={styles.progressBlock}>
           <ProgressCircle
             percent={progress}
             radius={40}
@@ -62,7 +66,7 @@ const TaskExpand = ({description, progress, id}) => {
             bgColor="white">
             <Text style={styles.progress}>{progress}%</Text>
           </ProgressCircle>
-        </View>
+        </View> */}
         <ButtonStandard
           title="details"
           onButtonPress={() => setVisible(true)}
@@ -75,15 +79,29 @@ const TaskExpand = ({description, progress, id}) => {
         <View style={styles.overlay}>
           <Text style={styles.title}>Description</Text>
           <Text style={styles.description}>{description}</Text>
-          <InputStandard
+          {status === 'Done' ? null : (
+            <View>
+              <Text style={styles.title}>Status</Text>
+              <View style={styles.picker}>
+                <Picker
+                  enabled={status === 'Done' ? false : true}
+                  selectedValue={newStatus}
+                  onValueChange={(itemValue) => setNewStatus(itemValue)}>
+                  <Picker.Item label="Doing" value="Doing" key="1" />
+                  <Picker.Item label="Reviewing" value="Reviewing" key="2" />
+                </Picker>
+              </View>
+              {/* {errMessage ? <ErrorMessage message={errMessage} /> : null} */}
+              <ButtonStandard title="update" onButtonPress={updateProgress} />
+            </View>
+          )}
+          {/* <InputStandard
             text={newProgress}
             setText={setNewProgress}
             placeholder="Enter new progress here..."
             isNumber
             elevation
-          />
-          {errMessage ? <ErrorMessage message={errMessage} /> : null}
-          <ButtonStandard title="update" onButtonPress={updateProgress} />
+          /> */}
         </View>
       </Overlay>
     </View>
@@ -124,6 +142,21 @@ const styles = EStyleSheet.create({
   overlay: {
     backgroundColor: 'white',
     margin: '3rem',
+  },
+  picker: {
+    marginTop: '3rem',
+    // marginHorizontal: '1rem',
+    // marginBottom: '3rem',
+    borderRadius: dimensions.borderRadius,
+    backgroundColor: 'white',
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.12,
+    shadowRadius: 60,
+    elevation: dimensions.elevation8,
   },
 });
 

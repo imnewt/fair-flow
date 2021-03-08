@@ -64,6 +64,7 @@ const Task = ({task}) => {
         <TaskExpand
           description={task.description}
           progress={task.progress}
+          status={task.status}
           id={task.id}
         />
       </Animated.View>

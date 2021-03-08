@@ -71,6 +71,7 @@ const RoomDetail = inject('userStore')(
               name={item.name}
               deadline={item.deadline}
               progress={item.progress}
+              status={item.status}
               underTakerId={item.underTakerId}
             />
           )}
