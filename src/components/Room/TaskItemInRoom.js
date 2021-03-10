@@ -1,8 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View} from 'react-native';
+import {Text, View, Image} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import ProgressCircle from 'react-native-progress-circle';
 import firestore from '@react-native-firebase/firestore';
+import DoingIcon from '../../assets/icons/doing.png';
+import ReviewingIcon from '../../assets/icons/reviewing.png';
+import DoneIcon from '../../assets/icons/done.png';
 import Themes from '../../utils/Themes';
 const {colors, dimensions} = Themes;
 
@@ -26,8 +29,32 @@ const TaskItemInRoom = ({name, underTakerId, progress, status, deadline}) => {
         <Text style={styles.text}>{underTakerName}</Text>
         <Text style={styles.text}>{deadline}</Text>
       </View>
-      <View>
-        <Text style={styles.text}>{status}</Text>
+      <View style={styles.progress}>
+        <Image
+          style={styles.icon}
+          source={
+            status === 'Doing'
+              ? DoingIcon
+              : status === 'Reviewing'
+              ? ReviewingIcon
+              : DoneIcon
+          }
+        />
+        <Text
+          style={[
+            styles.text,
+            {
+              color:
+                status === 'Doing'
+                  ? '#00B0FF'
+                  : status === 'Reviewing'
+                  ? '#FDD835'
+                  : '#00C853',
+              fontWeight: 'bold',
+            },
+          ]}>
+          {status}
+        </Text>
       </View>
       {/* <ProgressCircle
         percent={progress}
@@ -73,9 +100,17 @@ const styles = EStyleSheet.create({
     marginTop: '1rem',
     fontSize: '4rem',
   },
-  progress: {
-    fontSize: '4.5rem',
+  icon: {
+    width: '6rem',
+    height: '6rem',
   },
+  progress: {
+    alignItems: 'center',
+    width: '20rem',
+  },
+  // progress: {
+  //   fontSize: '4.5rem',
+  // },
 });
 
 export default TaskItemInRoom;

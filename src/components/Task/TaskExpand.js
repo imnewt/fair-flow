@@ -16,13 +16,13 @@ const {colors, dimensions} = Themes;
 const TaskExpand = ({description, progress, status, id}) => {
   const [visible, setVisible] = useState(false);
   // const [newProgress, setNewProgress] = useState('');
-  const [newStatus, setNewStatus] = useState('');
+  const [newStatus, setNewStatus] = useState(status || '');
   const [errMessage, setErrMessage] = useState('');
 
   const toggleOverlay = () => {
     setVisible(false);
     setErrMessage('');
-    setNewProgress('');
+    // setNewStatus('');
   };
 
   const updateProgress = () => {
