@@ -44,6 +44,7 @@ const FormCreateTask = ({visible, setVisible, roomId, memberList}) => {
         name: taskName,
         description,
         progress: 0,
+        status: 'Doing',
         deadline: dateText,
         roomId: roomId,
         underTakerId: handle,
