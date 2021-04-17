@@ -9,6 +9,7 @@ import ButtonStandard from './ButtonStandard';
 import ButtonGroup from './ButtonGroup';
 import ButtonAdd from './ButtonAdd';
 import EmptyState from './EmptyState';
+import ConfirmModal from './ConfirmModal';
 
 export {
   BaseContainer,
@@ -22,4 +23,5 @@ export {
   ButtonGroup,
   ButtonAdd,
   EmptyState,
+  ConfirmModal,
 };

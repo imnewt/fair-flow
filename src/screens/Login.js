@@ -40,7 +40,6 @@ const Login = inject('userStore')(
     }, []);
 
     const handleLogin = async () => {
-      console.log('pressed!');
       setIsLoading(true);
       setErrEmail('');
       setErrPass('');
@@ -62,7 +61,6 @@ const Login = inject('userStore')(
       auth()
         .signInWithEmailAndPassword(email.toLowerCase(), password)
         .then(() => {
-          console.log('then');
           setIsLoading(false);
           setVisible(true);
           const user = users.find((user) => user.email === email);
